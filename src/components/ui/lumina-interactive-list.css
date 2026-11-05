@@ -21,5 +21,5 @@
 .slider-wrapper.is-ready:not(.is-transitioning) .slide-nav-item.active .slide-progress-fill { animation: lumina-line-fill 5s linear forwards; }
 .slide-nav-title { font: 10px var(--font-mono); letter-spacing: .04em; }
 @keyframes lumina-line-fill { from { width: 0; } to { width: 100%; } }
-@media (max-width: 700px) { .slide-content { width: 84vw; margin-left: 8vw; } .slide-title { font-size: clamp(58px, 16vw, 100px); } .slides-navigation { right: 7vw; bottom: 24px; left: 7vw; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 14px; } .slide-nav-item { padding: 7px 0; } .slide-number, .slide-total { top: 25px; } }
+@media (max-width: 700px) { .slide-content { width: 84vw; margin: 0 auto; } .slide-title { font-size: clamp(58px, 16vw, 100px); } .slides-navigation { right: 7vw; bottom: 24px; left: 7vw; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 14px; } .slide-nav-item { padding: 7px 0; } .slide-number, .slide-total { top: 25px; } .content-reveal { justify-content: center; } }
 @media (prefers-reduced-motion: reduce) { .slide-title { animation-duration: .01ms; } }

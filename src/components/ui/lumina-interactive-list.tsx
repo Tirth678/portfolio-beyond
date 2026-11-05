@@ -79,7 +79,6 @@ export function Component() {
   const [active, setActive] = useState(0);
   const [ready, setReady] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
