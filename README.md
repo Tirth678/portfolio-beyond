@@ -15,8 +15,7 @@ npm run seed     # create tables, load content, upload images (idempotent)
 npm run dev      # http://localhost:3000
 ```
 
-`npm run seed` reads `DATABASE_URL_UNPOOLED` and the `AWS_*` variables from
-`.env.local`. The app itself uses the pooled `DATABASE_URL`.
+Without credentials, the app runs with the bundled seed content and images; seeding is optional for local development. `npm run seed` reads `DATABASE_URL_UNPOOLED` and the `AWS_*` variables from `.env.local`. The app itself uses the pooled `DATABASE_URL`.
 
 ```bash
 npm run build    # production build (prerenders pages from Postgres)
