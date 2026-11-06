@@ -1,22 +1,10 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import notesImage from '../../assets/notes.jpg';
-import philosophyImage from '../../assets/philosophy.jpg';
-import shotsImage from '../../assets/shots.jpg';
-import spaceImage from '../../assets/space.jpg';
-import thoughtsImage from '../../assets/thoughts.jpg';
-import './lumina-interactive-list.css';
-
-type Slide = { title: string; description: string; media: string };
-
-const slides: Slide[] = [
-  { title: 'Notes', description: 'A soft, radiant light that illuminates the soul.', media: notesImage },
-  { title: 'Philosophy', description: 'Lost in a desert of blooming dreams and endless horizons.', media: philosophyImage },
-  { title: 'Thoughts', description: 'Wrapped in the deep, luxurious embrace of the night.', media: thoughtsImage },
-  { title: 'Shots', description: 'That fleeting moment when the world is dipped in gold.', media: shotsImage },
-  { title: 'Space', description: 'Where reality fades and imagination takes flight.', media: spaceImage },
-];
+import type { HeroSlide } from '@/lib/types';
+import './hero-slider.css';
 
 const vertexShader = `
   varying vec2 vUv;
@@ -68,7 +56,12 @@ const fragmentShader = `
   }
 `;
 
-export function Component() {
+type HeroSliderProps = {
+  slides: HeroSlide[];
+  tagline: string;
+};
+
+export function HeroSlider({ slides, tagline }: HeroSliderProps) {
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
@@ -89,7 +82,7 @@ export function Component() {
     try {
       renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     } catch (error) {
-      console.error('WebGL is unavailable for the Lumina slider.', error);
+      console.error('WebGL is unavailable for the hero slider.', error);
       return;
     }
 
@@ -99,8 +92,12 @@ export function Component() {
     const size = new THREE.Vector2(1, 1);
     const material = new THREE.ShaderMaterial({
       uniforms: {
-        uTexture1: { value: null }, uTexture2: { value: null }, uProgress: { value: 1 },
-        uResolution: { value: size.clone() }, uTexture1Size: { value: size.clone() }, uTexture2Size: { value: size.clone() },
+        uTexture1: { value: null },
+        uTexture2: { value: null },
+        uProgress: { value: 1 },
+        uResolution: { value: size.clone() },
+        uTexture1Size: { value: size.clone() },
+        uTexture2Size: { value: size.clone() },
       },
       vertexShader,
       fragmentShader,
@@ -131,28 +128,47 @@ export function Component() {
 
     const loader = new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
-    Promise.all(slides.map((slide) => new Promise<THREE.Texture | null>((resolve) => {
-      loader.load(slide.media, (texture) => {
-        texture.minFilter = THREE.LinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        texture.colorSpace = THREE.SRGBColorSpace;
-        resolve(texture);
-      }, undefined, () => resolve(null));
-    }))).then((loaded) => {
+    Promise.all(
+      slides.map(
+        (slide) =>
+          new Promise<THREE.Texture | null>((resolve) => {
+            loader.load(
+              slide.image,
+              (texture) => {
+                texture.minFilter = THREE.LinearFilter;
+                texture.magFilter = THREE.LinearFilter;
+                texture.colorSpace = THREE.SRGBColorSpace;
+                resolve(texture);
+              },
+              undefined,
+              () => resolve(null),
+            );
+          }),
+      ),
+    ).then((loaded) => {
       if (disposed) {
         loaded.forEach((texture) => texture?.dispose());
         return;
       }
-      const fallback = loaded.find((texture): texture is THREE.Texture => texture !== null);
-      const textures = loaded.map((texture) => texture ?? fallback).filter((texture): texture is THREE.Texture => texture !== undefined);
+      const fallback = loaded.find(
+        (texture): texture is THREE.Texture => texture !== null,
+      );
+      const textures = loaded
+        .map((texture) => texture ?? fallback)
+        .filter((texture): texture is THREE.Texture => texture !== undefined);
       texturesRef.current = textures;
       if (textures.length) {
         const first = textures[0];
         const dimensions = first.image as HTMLImageElement;
         material.uniforms.uTexture1.value = first;
         material.uniforms.uTexture2.value = first;
-        material.uniforms.uTexture1Size.value.set(dimensions.naturalWidth || dimensions.width, dimensions.naturalHeight || dimensions.height);
-        material.uniforms.uTexture2Size.value.copy(material.uniforms.uTexture1Size.value);
+        material.uniforms.uTexture1Size.value.set(
+          dimensions.naturalWidth || dimensions.width,
+          dimensions.naturalHeight || dimensions.height,
+        );
+        material.uniforms.uTexture2Size.value.copy(
+          material.uniforms.uTexture1Size.value,
+        );
         setReady(true);
       }
     });
@@ -170,12 +186,19 @@ export function Component() {
       renderer.dispose();
       materialRef.current = null;
     };
-  }, []);
+  }, [slides]);
 
   const goToSlide = (target: number) => {
     const material = materialRef.current;
     const textures = texturesRef.current;
-    if (!material || transitioningRef.current || target === activeRef.current || textures.length !== slides.length) return;
+    if (
+      !material ||
+      transitioningRef.current ||
+      target === activeRef.current ||
+      textures.length !== slides.length
+    ) {
+      return;
+    }
 
     transitioningRef.current = true;
     setIsTransitioning(true);
@@ -185,8 +208,14 @@ export function Component() {
     const nextSize = nextTexture.image as HTMLImageElement;
     material.uniforms.uTexture1.value = currentTexture;
     material.uniforms.uTexture2.value = nextTexture;
-    material.uniforms.uTexture1Size.value.set(currentSize.naturalWidth || currentSize.width, currentSize.naturalHeight || currentSize.height);
-    material.uniforms.uTexture2Size.value.set(nextSize.naturalWidth || nextSize.width, nextSize.naturalHeight || nextSize.height);
+    material.uniforms.uTexture1Size.value.set(
+      currentSize.naturalWidth || currentSize.width,
+      currentSize.naturalHeight || currentSize.height,
+    );
+    material.uniforms.uTexture2Size.value.set(
+      nextSize.naturalWidth || nextSize.width,
+      nextSize.naturalHeight || nextSize.height,
+    );
     material.uniforms.uProgress.value = 0;
     activeRef.current = target;
     // Swap the text underneath its mask at the start; the same center-out
@@ -208,7 +237,9 @@ export function Component() {
       ease: 'power2.inOut',
       onComplete: () => {
         material.uniforms.uTexture1.value = nextTexture;
-        material.uniforms.uTexture1Size.value.copy(material.uniforms.uTexture2Size.value);
+        material.uniforms.uTexture1Size.value.copy(
+          material.uniforms.uTexture2Size.value,
+        );
         material.uniforms.uProgress.value = 1;
         transitioningRef.current = false;
         setIsTransitioning(false);
@@ -216,10 +247,15 @@ export function Component() {
     });
   };
 
-  const goToNextSlide = () => goToSlide((activeRef.current + 1) % slides.length);
+  const goToNextSlide = () =>
+    goToSlide((activeRef.current + 1) % slides.length);
 
   useEffect(() => {
     if (!ready) return;
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    if (reducedMotion) return;
 
     const interval = setInterval(() => {
       if (!isTransitioning && !transitioningRef.current) {
@@ -228,27 +264,67 @@ export function Component() {
     }, 5000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, isTransitioning]);
 
-  const slide = slides[active];
+  const slide = slides[active] ?? slides[0];
+  if (!slide) return null;
+
   return (
-    <main ref={containerRef} className={`slider-wrapper${ready ? ' is-ready' : ''}${isTransitioning ? ' is-transitioning' : ''}`}>
+    <section
+      ref={containerRef}
+      aria-label="Featured chapters"
+      className={`slider-wrapper${ready ? ' is-ready' : ''}${
+        isTransitioning ? ' is-transitioning' : ''
+      }`}
+    >
       <canvas ref={canvasRef} className="webgl-canvas" aria-hidden="true" />
       <div className="slider-shade" />
-      <span className="slide-number">Tirth S Pandya</span>
-      <span className="slide-total">where curiosity begins</span>
-      <div ref={contentRef} className={`content-reveal${active === 0 ? ' is-initial' : ''}`}>
+
+      <span className="slide-counter" aria-hidden="true">
+        0{active + 1} / 0{slides.length}
+      </span>
+
+      <div
+        ref={contentRef}
+        className={`content-reveal${active === 0 ? ' is-initial' : ''}`}
+      >
         <section className="slide-content" aria-live="polite">
-          <h1 className="slide-title"><button type="button" className="slide-title-button" onClick={goToNextSlide} aria-label={`Next slide. Current slide: ${slide.title}`}>{slide.title}</button></h1>
+          <p className="slide-kicker">
+            <span className="slide-kicker-dot" aria-hidden="true" />
+            {tagline}
+          </p>
+          <p className="slide-eyebrow">{slide.eyebrow}</p>
+          <h1 className="slide-title">
+            <button
+              type="button"
+              className="slide-title-button"
+              onClick={goToNextSlide}
+              aria-label={`Next chapter. Now showing ${slide.title}`}
+            >
+              {slide.title}
+            </button>
+          </h1>
           <p className="slide-description">{slide.description}</p>
         </section>
       </div>
-      <nav className="slides-navigation" aria-label="Choose a slide">
-        {slides.map((item, index) => <button key={item.title} type="button" className={`slide-nav-item${index === active ? ' active' : ''}`} onClick={() => goToSlide(index)} aria-current={index === active ? 'true' : undefined}>
-          <span className="slide-progress-line"><span key={`${index}-${active}`} className="slide-progress-fill" /></span>
-          <span className="slide-nav-title">{item.title}</span>
-        </button>)}
+
+      <nav className="slides-navigation" aria-label="Chapters">
+        {slides.map((item, index) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`slide-nav-item${index === active ? ' active' : ''}`}
+            onClick={() => goToSlide(index)}
+            aria-current={index === active ? 'true' : undefined}
+          >
+            <span className="slide-progress-line">
+              <span key={`${index}-${active}`} className="slide-progress-fill" />
+            </span>
+            <span className="slide-nav-title">{item.title}</span>
+          </button>
+        ))}
       </nav>
-    </main>
+    </section>
   );
 }

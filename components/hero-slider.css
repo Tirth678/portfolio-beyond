@@ -1,0 +1,245 @@
+.slider-wrapper {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  overflow: hidden;
+  align-items: center;
+  background: #0a0a0a;
+  isolation: isolate;
+}
+
+.webgl-canvas,
+.slider-shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.webgl-canvas {
+  z-index: -2;
+  display: block;
+}
+
+.slider-shade {
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.1) 74%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.78), transparent 42%);
+}
+
+/* Top-of-image meta, sitting below the fixed header */
+.slide-counter {
+  position: absolute;
+  top: calc(var(--header-height) + 22px);
+  right: 6vw;
+  font: var(--font-size-mono) var(--font-mono);
+  letter-spacing: 0.16em;
+  color: var(--color-text-light);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+.content-reveal {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  clip-path: circle(72% at 50% 50%);
+  pointer-events: none;
+  padding-top: var(--header-height);
+}
+
+.content-reveal.is-initial {
+  clip-path: none;
+}
+
+.slide-content {
+  width: min(900px, 78vw);
+  margin: -2vh 0 0 12vw;
+}
+
+.slide-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 26px;
+  font: 10px var(--font-mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 234, 0.5);
+}
+
+.slide-kicker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.8);
+}
+
+.slide-eyebrow {
+  margin: 0 0 18px;
+  color: var(--color-accent);
+  font: 11px var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.slide-title {
+  max-width: 850px;
+  margin: 0;
+  font: 400 clamp(64px, 11vw, 156px) / 0.88 var(--font-display);
+  letter-spacing: -0.045em;
+}
+
+.slide-title-button {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.slide-title-button:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 8px;
+}
+
+.slide-description {
+  max-width: 410px;
+  margin: 30px 0 0;
+  color: var(--color-text-muted);
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.6;
+}
+
+.slides-navigation {
+  position: absolute;
+  z-index: 2;
+  right: 6vw;
+  bottom: 44px;
+  left: 6vw;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.slide-nav-item {
+  padding: 12px 0;
+  border: 0;
+  color: rgba(245, 242, 234, 0.5);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.slide-nav-item:hover,
+.slide-nav-item.active {
+  color: #f5f2ea;
+}
+
+.slide-progress-line {
+  display: block;
+  height: 1px;
+  margin-bottom: 11px;
+  background: rgba(245, 242, 234, 0.28);
+}
+
+.slide-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--color-accent);
+}
+
+.slider-wrapper.is-ready:not(.is-transitioning)
+  .slide-nav-item.active
+  .slide-progress-fill {
+  animation: lumina-line-fill 5s linear forwards;
+}
+
+.slide-nav-title {
+  font: 10px var(--font-mono);
+  letter-spacing: 0.06em;
+}
+
+@keyframes lumina-line-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .slide-counter {
+    top: calc(var(--header-height) + 12px);
+    right: 7vw;
+  }
+
+  .content-reveal {
+    justify-content: center;
+    padding-top: var(--header-height);
+    padding-bottom: 4.5rem;
+  }
+
+  .slide-content {
+    width: 84vw;
+    margin: 0 auto;
+  }
+
+  .slide-kicker {
+    margin-bottom: 20px;
+    font-size: 9px;
+  }
+
+  .slide-eyebrow {
+    font-size: 10px;
+    margin-bottom: 14px;
+  }
+
+  .slide-title {
+    font-size: clamp(58px, 16vw, 100px);
+  }
+
+  .slide-description {
+    margin-top: 20px;
+  }
+
+  .slides-navigation {
+    right: 7vw;
+    bottom: 20px;
+    left: 7vw;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px 14px;
+  }
+
+  .slide-nav-item {
+    padding: 5px 0;
+  }
+
+  .slide-progress-line {
+    margin-bottom: 7px;
+  }
+
+  .slide-nav-title {
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-wrapper.is-ready:not(.is-transitioning)
+    .slide-nav-item.active
+    .slide-progress-fill {
+    animation: none;
+    width: 100%;
+  }
+}
