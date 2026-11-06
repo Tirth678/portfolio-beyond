@@ -5,7 +5,7 @@ type RouteParams = {
   params: Promise<{ key: string[] }>;
 };
 
-export async function GET(_request: Request, { params }: RouteParams) {
+export async function GET(request: Request, { params }: RouteParams) {
   const segments = (await params).key ?? [];
   const key = segments.join('/');
 
@@ -15,6 +15,12 @@ export async function GET(_request: Request, { params }: RouteParams) {
     segments.some((segment) => segment === '..' || segment === '.')
   ) {
     return NextResponse.json({ error: 'Invalid image key' }, { status: 400 });
+  }
+
+  // The bundled seed artwork also works without Neon credentials.
+  const bundledImages = new Set(['notes.jpg', 'philosophy.jpg', 'thoughts.jpg', 'shots.jpg', 'space.jpg']);
+  if (!process.env.AWS_ACCESS_KEY_ID && segments.length === 2 && bundledImages.has(segments[1])) {
+    return NextResponse.redirect(new URL(`/images/${segments[1]}`, request.url));
   }
 
   try {
