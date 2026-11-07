@@ -44,16 +44,31 @@ function Row({
             className="group block w-full text-left"
           >
             <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
-              <Image
-                src={row.image}
-                alt={row.imageAlt}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                unoptimized={isRemote(row.image)}
-                className={`object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] ${
-                  open ? 'scale-[1.03]' : 'group-hover:scale-[1.03]'
-                }`}
-              />
+              {row.video ? (
+                <video
+                  src={row.video}
+                  aria-label={row.imageAlt}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] ${
+                    open ? 'scale-[1.03]' : 'group-hover:scale-[1.03]'
+                  }`}
+                />
+              ) : (
+                <Image
+                  src={row.image}
+                  alt={row.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  unoptimized={isRemote(row.image)}
+                  className={`object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] ${
+                    open ? 'scale-[1.03]' : 'group-hover:scale-[1.03]'
+                  }`}
+                />
+              )}
               <div
                 aria-hidden="true"
                 className={`absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent transition-opacity duration-500 ${
