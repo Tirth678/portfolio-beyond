@@ -29,7 +29,7 @@ const profile = {
     { label: 'X', href: 'https://x.com/TirthPandy57784' },
     { label: 'YouTube', href: 'https://www.youtube.com/@-Fuzion' },
     { label: 'LinkedIn — coming soon' },
-    { label: 'GitHub', href: 'https://github.com/tirthpandya' },
+    { label: 'GitHub', href: 'https://github.com/Tirth678' },
     { label: 'Email', href: 'mailto:tirthp244@proton.me' },
   ],
 };
