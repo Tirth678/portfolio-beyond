@@ -20,11 +20,12 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
+  const siteTitle = `${profile.name} — Portfolio Beyond Engineering`;
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${profile.name} — Visual Designer & Creative Developer`,
+      default: siteTitle,
       template: `%s — ${profile.name}`,
     },
     description: profile.intro,
@@ -38,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: 'website',
       siteName: profile.name,
-      title: `${profile.name} — Visual Designer & Creative Developer`,
+      title: siteTitle,
       description: profile.intro,
       images: [
         {
@@ -51,7 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${profile.name} — Visual Designer & Creative Developer`,
+      title: siteTitle,
       description: profile.intro,
       images: ['/api/images/portfolio/thoughts.jpg'],
     },

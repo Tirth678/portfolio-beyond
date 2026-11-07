@@ -18,6 +18,8 @@ const fragmentShader = `
   uniform vec2 uResolution;
   uniform vec2 uTexture1Size;
   uniform vec2 uTexture2Size;
+  uniform float uTexture1FitMobile;
+  uniform float uTexture2FitMobile;
   varying vec2 vUv;
 
   vec2 coverUv(vec2 uv, vec2 imageSize) {
@@ -28,9 +30,23 @@ const fragmentShader = `
     return uv;
   }
 
+  vec4 sampleImage(sampler2D image, vec2 uv, vec2 imageSize, float fitMobile) {
+    vec2 cover = coverUv(uv, imageSize);
+    vec4 backdrop = texture2D(image, cover);
+    float screenAspect = uResolution.x / uResolution.y;
+    if (fitMobile < 0.5 || screenAspect >= 0.85) return backdrop;
+
+    // Show the whole image on portrait screens over a dimmed, cover-sized
+    // copy, keeping its subject and context visible without empty black bars.
+    float imageAspect = imageSize.x / imageSize.y;
+    vec2 contained = uv;
+    if (imageAspect > screenAspect) contained.y = (uv.y - 0.5) * imageAspect / screenAspect + 0.5;
+    else contained.x = (uv.x - 0.5) * screenAspect / imageAspect + 0.5;
+    bool inside = contained.x >= 0.0 && contained.x <= 1.0 && contained.y >= 0.0 && contained.y <= 1.0;
+    return inside ? texture2D(image, contained) : vec4(backdrop.rgb * 0.18, 1.0);
+  }
+
   void main() {
-    vec2 uv1 = coverUv(vUv, uTexture1Size);
-    vec2 uv2 = coverUv(vUv, uTexture2Size);
     vec2 p = (vUv - 0.5) * uResolution;
     float distanceFromCenter = length(p);
     float angle = atan(p.y, p.x);
@@ -48,9 +64,9 @@ const fragmentShader = `
     float rim = exp(-pow((edgeDistance - radius) / 15.0, 2.0)) * (1.0 - uProgress);
 
     vec2 radial = distanceFromCenter > 0.001 ? normalize(p) : vec2(0.0);
-    vec2 waterUv = uv2 + radial * rim * 0.012;
-    vec4 oldImage = texture2D(uTexture1, uv1);
-    vec4 newImage = texture2D(uTexture2, waterUv);
+    vec2 waterUv = vUv + radial * rim * 0.012;
+    vec4 oldImage = sampleImage(uTexture1, vUv, uTexture1Size, uTexture1FitMobile);
+    vec4 newImage = sampleImage(uTexture2, waterUv, uTexture2Size, uTexture2FitMobile);
     gl_FragColor = mix(oldImage, newImage, reveal);
     gl_FragColor.rgb += rim * vec3(0.10, 0.16, 0.18);
   }
@@ -98,6 +114,8 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
         uResolution: { value: size.clone() },
         uTexture1Size: { value: size.clone() },
         uTexture2Size: { value: size.clone() },
+        uTexture1FitMobile: { value: 0 },
+        uTexture2FitMobile: { value: 0 },
       },
       vertexShader,
       fragmentShader,
@@ -162,6 +180,9 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
         const dimensions = first.image as HTMLImageElement;
         material.uniforms.uTexture1.value = first;
         material.uniforms.uTexture2.value = first;
+        const fitMobile = slides[0]?.id === 'space' || slides[0]?.id === 'shots' ? 1 : 0;
+        material.uniforms.uTexture1FitMobile.value = fitMobile;
+        material.uniforms.uTexture2FitMobile.value = fitMobile;
         material.uniforms.uTexture1Size.value.set(
           dimensions.naturalWidth || dimensions.width,
           dimensions.naturalHeight || dimensions.height,
@@ -208,6 +229,8 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
     const nextSize = nextTexture.image as HTMLImageElement;
     material.uniforms.uTexture1.value = currentTexture;
     material.uniforms.uTexture2.value = nextTexture;
+    material.uniforms.uTexture1FitMobile.value = ['space', 'shots'].includes(slides[activeRef.current].id) ? 1 : 0;
+    material.uniforms.uTexture2FitMobile.value = ['space', 'shots'].includes(slides[target].id) ? 1 : 0;
     material.uniforms.uTexture1Size.value.set(
       currentSize.naturalWidth || currentSize.width,
       currentSize.naturalHeight || currentSize.height,
@@ -237,6 +260,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
       ease: 'power2.inOut',
       onComplete: () => {
         material.uniforms.uTexture1.value = nextTexture;
+        material.uniforms.uTexture1FitMobile.value = material.uniforms.uTexture2FitMobile.value;
         material.uniforms.uTexture1Size.value.copy(
           material.uniforms.uTexture2Size.value,
         );
