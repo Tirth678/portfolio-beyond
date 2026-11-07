@@ -36,12 +36,15 @@ neon env pull    # refresh credentials in .env.local
 | Postgres | `site_content` + `projects` tables | `DATABASE_URL` (pooled), `DATABASE_URL_UNPOOLED` (migrations) |
 | Object Storage | private `assets` bucket, key prefix `portfolio/` | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `S3_BUCKET` |
 
-`.env.local` is gitignored; never commit it. `NEXT_PUBLIC_SITE_URL` is optional
-and sets the absolute origin used for Open Graph metadata.
+`.env.local` is gitignored; never commit it. `NEXT_PUBLIC_SITE_URL` sets the
+absolute origin used for Open Graph metadata. If unset, the app uses Vercel's
+`VERCEL_PROJECT_PRODUCTION_URL` when available, or localhost for local development.
 
 ## Content workflow
 
-The database is the source of truth at runtime.
+The database is the source of truth at runtime, except for the profile email,
+social links and Philosophy introduction and image, which are maintained in `lib/content.ts`
+and override database values so they stay consistent across the site.
 
 - **Text** lives in `site_content` (`profile`, `slides`, `about`, `process`,
   `contact`) as JSONB.
@@ -96,5 +99,5 @@ storage environment variables to that host (`neon env pull` prints the names).
 Run the schema/seed once against the production branch. No other external
 service is required.
 
-**Placeholders to replace:** email, social links, stats and project copy in
+**Placeholders to replace:** some profile details, stats and project copy in
 `lib/content.ts` are sample content.

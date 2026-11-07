@@ -478,7 +478,7 @@ export default function HalftoneWordmarkFooter({
             <ul>
               {col.links.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href || "#"}>{l.label}</a>
+                  {l.href ? <a href={l.href}>{l.label}</a> : <span>{l.label}</span>}
                 </li>
               ))}
             </ul>

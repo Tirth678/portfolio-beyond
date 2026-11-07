@@ -1,6 +1,6 @@
 export type Social = {
   label: string;
-  href: string;
+  href?: string;
 };
 
 export type Profile = {

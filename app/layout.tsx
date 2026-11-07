@@ -16,7 +16,8 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { getProfile } from '@/lib/data';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000');
 
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
@@ -43,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: profile.intro,
       images: [
         {
-          url: '/api/images/portfolio/thoughts.jpg',
+          url: '/images/thoughts.jpg',
           width: 1200,
           height: 675,
           alt: 'A caped figure watching a rain-soaked city at night',
@@ -54,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       title: siteTitle,
       description: profile.intro,
-      images: ['/api/images/portfolio/thoughts.jpg'],
+      images: ['/images/thoughts.jpg'],
     },
   };
 }

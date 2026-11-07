@@ -32,6 +32,11 @@ type ProjectRow = {
 /** Object keys live in Postgres; the browser reads them through this app. */
 export function mediaUrl(key: string) {
   if (key.startsWith('/') || key.startsWith('http')) return key;
+  // Use bundled assets directly when object storage is not configured. This
+  // avoids a serverless redirect for every image in the seed-only deployment.
+  if (!process.env.AWS_ACCESS_KEY_ID && /^portfolio\/(notes|philosophy|thoughts|shots|space)\.jpg$/.test(key)) {
+    return `/images/${key.slice('portfolio/'.length)}`;
+  }
   return `/api/images/${key
     .split('/')
     .map((segment) => encodeURIComponent(segment))
@@ -74,17 +79,30 @@ function decorateSlide(slide: HeroSlide): HeroSlide {
     return { ...slide, image: '/images/shots-hero.jpg', alt: 'A Gothic cathedral rising into a misty sky' };
   }
   if (slide.id === 'space') {
-    return { ...slide, title: 'Eternity', image: '/images/eternity-night-sky.jpg', alt: 'The Milky Way above clouds in a black-and-white night sky' };
+    return { ...slide, title: 'Eternity', image: '/images/eternity-sombrero.webp', alt: 'The Sombrero Galaxy glowing against a star-filled sky' };
   }
   return { ...slide, image: mediaUrl(slide.image) };
+}
+
+/** Contact details are maintained in the repository for both seed and database content. */
+function decorateProfile(profile: Profile): Profile {
+  const contact = seed.getProfile();
+  return { ...profile, email: contact.email, socials: contact.socials };
+}
+
+/** The Philosophy introduction is authored in the repository. */
+function decorateAbout(about: About): About {
+  const chapter = seed.getPortfolio().about;
+  return { ...about, body: chapter.body, image: mediaUrl(chapter.image), imageAlt: chapter.imageAlt };
 }
 
 function decoratePortfolio(content: PortfolioContent): PortfolioContent {
   return {
     ...content,
+    profile: decorateProfile(content.profile),
     slides: content.slides.map(decorateSlide),
     projects: content.projects.map(decorateProject),
-    about: { ...content.about, image: mediaUrl(content.about.image) },
+    about: decorateAbout(content.about),
   };
 }
 
@@ -124,10 +142,10 @@ export async function getPortfolio(): Promise<PortfolioContent> {
   }
 
   return {
-    profile,
+    profile: decorateProfile(profile),
     slides: slides.map(decorateSlide),
     projects: projectRows.map(toProject),
-    about: { ...about, image: mediaUrl(about.image) },
+    about: decorateAbout(about),
     process,
     contact,
   };
@@ -135,7 +153,7 @@ export async function getPortfolio(): Promise<PortfolioContent> {
 
 export async function getProfile(): Promise<Profile> {
   const profile = sql ? await readContent<Profile>('profile') : null;
-  return profile ?? seed.getProfile();
+  return decorateProfile(profile ?? seed.getProfile());
 }
 
 export async function getProjects(category?: string | null): Promise<Project[]> {

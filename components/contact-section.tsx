@@ -39,21 +39,22 @@ export function ContactSection({
 
             <div className="mt-8">
               {profile.socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('mailto:') ? undefined : '_blank'}
-                  rel="noreferrer"
-                  className="group flex items-center justify-between border-b border-white/10 py-3 font-mono text-[10px] tracking-[0.18em] text-paper/55 uppercase transition-colors hover:text-accent"
-                >
-                  {social.label}
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                social.href ? (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target={social.href.startsWith('mailto:') ? undefined : '_blank'}
+                    rel="noreferrer"
+                    className="group flex items-center justify-between border-b border-white/10 py-3 font-mono text-[10px] tracking-[0.18em] text-paper/55 uppercase transition-colors hover:text-accent"
                   >
-                    ↗
+                    {social.label}
+                    <span aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+                  </a>
+                ) : (
+                  <span key={social.label} className="flex items-center justify-between border-b border-white/10 py-3 font-mono text-[10px] tracking-[0.18em] text-paper/35 uppercase">
+                    {social.label}
                   </span>
-                </a>
+                )
               ))}
             </div>
 

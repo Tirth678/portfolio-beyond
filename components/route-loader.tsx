@@ -5,8 +5,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AbstractCubeIsometricLoader } from '@/components/ui/abstract-cube-isometric-loader';
 
 /** Keeps the loader on screen long enough to read, even on instant routes. */
-const MIN_VISIBLE_MS = 420;
-const FADE_MS = 520;
+const MIN_VISIBLE_MS = 100;
+const FADE_MS = 250;
 /** Never trap the page behind the overlay if a navigation stalls. */
 const SAFETY_MS = 8000;
 
@@ -52,31 +52,12 @@ export function RouteLoader() {
     return () => window.clearTimeout(id);
   }, [phase]);
 
-  // Initial page load: hide once the document has finished loading, with a
-  // safety net so a slow asset can never leave the overlay up.
+  // Hydration means the page is interactive; don't wait for every image or
+  // video on the page before revealing the content.
   useEffect(() => {
     shownAt.current = performance.now();
-    let cancelled = false;
-    let safety: number | undefined;
-
-    const done = () => {
-      if (cancelled) return;
-      window.clearTimeout(safety);
-      finish();
-    };
-
-    if (document.readyState === 'complete') {
-      done();
-    } else {
-      window.addEventListener('load', done, { once: true });
-      safety = window.setTimeout(done, SAFETY_MS);
-    }
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener('load', done);
-      window.clearTimeout(safety);
-    };
+    finish();
+    return () => window.clearTimeout(timer.current);
   }, [finish]);
 
   // Any same-origin link to a different path starts a navigation.
@@ -131,7 +112,7 @@ export function RouteLoader() {
     <div
       data-route-loader=""
       aria-hidden={!loading}
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-ink transition-opacity duration-500 ease-out motion-reduce:transition-none ${
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-7 bg-ink transition-opacity duration-200 ease-out motion-reduce:transition-none ${
         loading ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ pointerEvents: loading ? 'auto' : 'none' }}

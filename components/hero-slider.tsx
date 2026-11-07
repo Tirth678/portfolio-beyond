@@ -81,7 +81,8 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
-  const texturesRef = useRef<THREE.Texture[]>([]);
+  const texturesRef = useRef<(THREE.Texture | null)[]>([]);
+  const [webglUnavailable, setWebglUnavailable] = useState(false);
   const activeRef = useRef(0);
   const contentRef = useRef<HTMLDivElement>(null);
   const transitioningRef = useRef(false);
@@ -98,7 +99,9 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
     try {
       renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     } catch (error) {
-      console.error('WebGL is unavailable for the hero slider.', error);
+      console.warn('WebGL is unavailable for the hero slider.', error);
+      setWebglUnavailable(true);
+      setReady(true);
       return;
     }
 
@@ -146,52 +149,49 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
 
     const loader = new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
-    Promise.all(
-      slides.map(
-        (slide) =>
-          new Promise<THREE.Texture | null>((resolve) => {
-            loader.load(
-              slide.image,
-              (texture) => {
-                texture.minFilter = THREE.LinearFilter;
-                texture.magFilter = THREE.LinearFilter;
-                texture.colorSpace = THREE.SRGBColorSpace;
-                resolve(texture);
-              },
-              undefined,
-              () => resolve(null),
-            );
-          }),
-      ),
-    ).then((loaded) => {
-      if (disposed) {
-        loaded.forEach((texture) => texture?.dispose());
+    // Start all downloads together, but render the first slide as soon as its
+    // own texture arrives rather than waiting for every other chapter image.
+    const textures: (THREE.Texture | null)[] = Array(slides.length).fill(null);
+    texturesRef.current = textures;
+    let firstSettled = false;
+    const showFirst = (texture: THREE.Texture) => {
+      if (disposed || firstSettled) return;
+      firstSettled = true;
+      const dimensions = texture.image as HTMLImageElement;
+      material.uniforms.uTexture1.value = texture;
+      material.uniforms.uTexture2.value = texture;
+      const fitMobile = slides[0]?.id === 'space' || slides[0]?.id === 'shots' ? 1 : 0;
+      material.uniforms.uTexture1FitMobile.value = fitMobile;
+      material.uniforms.uTexture2FitMobile.value = fitMobile;
+      material.uniforms.uTexture1Size.value.set(
+        dimensions.naturalWidth || dimensions.width,
+        dimensions.naturalHeight || dimensions.height,
+      );
+      material.uniforms.uTexture2Size.value.copy(material.uniforms.uTexture1Size.value);
+      setReady(true);
+    };
+    Promise.all(slides.map((slide, index) => new Promise<THREE.Texture | null>((resolve) => {
+      loader.load(slide.image, (texture) => {
+        if (disposed) { texture.dispose(); resolve(null); return; }
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        textures[index] = texture;
+        if (index === 0) showFirst(texture);
+        resolve(texture);
+      }, undefined, () => resolve(null));
+    }))).then((loaded) => {
+      if (disposed) return;
+      const fallback = loaded.find((texture): texture is THREE.Texture => texture !== null);
+      if (!fallback) {
+        setWebglUnavailable(true);
+        setReady(true);
         return;
       }
-      const fallback = loaded.find(
-        (texture): texture is THREE.Texture => texture !== null,
-      );
-      const textures = loaded
-        .map((texture) => texture ?? fallback)
-        .filter((texture): texture is THREE.Texture => texture !== undefined);
-      texturesRef.current = textures;
-      if (textures.length) {
-        const first = textures[0];
-        const dimensions = first.image as HTMLImageElement;
-        material.uniforms.uTexture1.value = first;
-        material.uniforms.uTexture2.value = first;
-        const fitMobile = slides[0]?.id === 'space' || slides[0]?.id === 'shots' ? 1 : 0;
-        material.uniforms.uTexture1FitMobile.value = fitMobile;
-        material.uniforms.uTexture2FitMobile.value = fitMobile;
-        material.uniforms.uTexture1Size.value.set(
-          dimensions.naturalWidth || dimensions.width,
-          dimensions.naturalHeight || dimensions.height,
-        );
-        material.uniforms.uTexture2Size.value.copy(
-          material.uniforms.uTexture1Size.value,
-        );
-        setReady(true);
-      }
+      // Failed assets retain the previous graceful fallback, without holding up
+      // the first frame. Leave all indices aligned with their slides.
+      loaded.forEach((texture, index) => { textures[index] = texture ?? fallback; });
+      showFirst(textures[0] ?? fallback);
     });
 
     return () => {
@@ -200,7 +200,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
       window.removeEventListener('resize', resize);
       resizeObserver.disconnect();
       gsap.killTweensOf(material.uniforms.uProgress);
-      new Set(texturesRef.current).forEach((texture) => texture.dispose());
+      new Set(texturesRef.current).forEach((texture) => texture?.dispose());
       texturesRef.current = [];
       material.dispose();
       geometry.dispose();
@@ -212,19 +212,27 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
   const goToSlide = (target: number) => {
     const material = materialRef.current;
     const textures = texturesRef.current;
+    if (webglUnavailable) {
+      if (target !== activeRef.current) {
+        activeRef.current = target;
+        setActive(target);
+      }
+      return;
+    }
     if (
       !material ||
       transitioningRef.current ||
       target === activeRef.current ||
-      textures.length !== slides.length
+      textures.length !== slides.length ||
+      !textures[activeRef.current] || !textures[target]
     ) {
       return;
     }
 
     transitioningRef.current = true;
     setIsTransitioning(true);
-    const currentTexture = textures[activeRef.current];
-    const nextTexture = textures[target];
+    const currentTexture = textures[activeRef.current]!;
+    const nextTexture = textures[target]!;
     const currentSize = currentTexture.image as HTMLImageElement;
     const nextSize = nextTexture.image as HTMLImageElement;
     material.uniforms.uTexture1.value = currentTexture;
@@ -298,11 +306,12 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
     <section
       ref={containerRef}
       aria-label="Featured chapters"
+      style={{ backgroundImage: slides[webglUnavailable ? active : 0]?.image ? `url("${slides[webglUnavailable ? active : 0].image}")` : undefined }}
       className={`slider-wrapper${ready ? ' is-ready' : ''}${
         isTransitioning ? ' is-transitioning' : ''
       }`}
     >
-      <canvas ref={canvasRef} className="webgl-canvas" aria-hidden="true" />
+      <canvas ref={canvasRef} className="webgl-canvas" aria-hidden="true" style={{ opacity: ready && !webglUnavailable ? 1 : 0 }} />
       <div className="slider-shade" />
 
       <span className="slide-counter" aria-hidden="true">
