@@ -21,14 +21,16 @@ const profile = {
   tagline: 'where curiosity begins',
   location: 'India — working worldwide',
   availability: 'Available for select projects',
-  email: 'hello@tirthpandya.com',
+  email: 'tirthp244@proton.me',
   intro:
     'I design and build visual experiences for people who care about the details — art direction, identity and the web.',
   socials: [
-    { label: 'Instagram', href: 'https://instagram.com/tirthpandya' },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/tirthpandya' },
+    { label: 'Substack', href: 'https://substack.com/@tirth819319' },
+    { label: 'X', href: 'https://x.com/TirthPandy57784' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@-Fuzion' },
+    { label: 'LinkedIn — coming soon' },
     { label: 'GitHub', href: 'https://github.com/tirthpandya' },
-    { label: 'Email', href: 'mailto:hello@tirthpandya.com' },
+    { label: 'Email', href: 'mailto:tirthp244@proton.me' },
   ],
 };
 
@@ -70,8 +72,8 @@ const slides: HeroSlide[] = [
     eyebrow: '05 — Beyond',
     title: 'Eternity',
     description: 'Where reality fades and imagination takes flight.',
-    image: '/images/eternity-night-sky.jpg',
-    alt: 'The Milky Way above clouds in a black-and-white night sky',
+    image: '/images/eternity-sombrero.webp',
+    alt: 'The Sombrero Galaxy glowing against a star-filled sky',
   },
 ];
 
@@ -196,12 +198,12 @@ const projects: Project[] = [
 const about = {
   heading: 'Quiet work, made to be looked at twice.',
   body: [
-    "I'm Tirth — a visual designer and creative developer working where image, type and motion meet. My practice moves between art direction, identity and the web, always in service of a feeling rather than a trend.",
-    'This site is part portfolio, part journal. The chapters in the hero are the things I keep returning to: light, philosophy, the city after dark, small observations, and the scale of everything. Commissions tend to grow out of the same curiosity — slowly, deliberately, and built to outlast the season.',
-    'Before going independent I designed interfaces for studios in India and Europe. These days I work with a small circle of photographers, founders and cultural institutions who care about the details.',
+    "I'm Tirth — a developer, builder and creative technologist working at the intersection of software, design and emerging technology. My work moves between engineering digital experiences, exploring artificial intelligence and building products from the ground up. I'm drawn to the space where technical precision meets creative possibility, where an idea becomes something people can actually interact with.",
+    "This site is a collection of things I've built, explored and questioned along the way. From the web and open-source software to machine learning, neural networks and experimental projects, each piece reflects a curiosity for understanding how things work — and imagining how they could work better. I believe in building with intention, staying curious and creating things that have a reason to exist beyond simply being made.",
+    "Alongside my independent work, I lead web development at CODE CLUB, GSFCU, and work on products and experiments through FlinT. My journey spans full-stack engineering, AI research, technical leadership and the occasional rabbit hole that turns into a project. I'm interested in collaborating with people who think deeply, build ambitiously and aren't afraid to explore what hasn't been done yet.",
   ],
-  image: 'portfolio/notes.jpg',
-  imageAlt: 'A candlelit portrait in the manner of a classical oil painting',
+  image: '/images/philosophy-portrait.jpg',
+  imageAlt: 'Portrait of a man in a black shirt',
   stats: [
     { value: '6', label: 'Years of practice' },
     { value: '28', label: 'Projects shipped' },

@@ -12,7 +12,7 @@ const chapters = [
 export function SiteFooter({ profile }: { profile: Profile }) {
   const year = new Date().getFullYear();
   const elsewhere = profile.socials.filter(
-    (social) => !social.href.startsWith('mailto:'),
+    (social) => !social.href?.startsWith('mailto:'),
   );
 
   return (
