@@ -23,7 +23,7 @@ export function AboutSection({ about }: { about: About }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
             </div>
             <div className="mt-4 flex justify-between font-mono text-[9px] tracking-[0.18em] text-paper/35 uppercase">
-              <span>Portrait — available light</span>
+              <span>Mike Ross from Suits — fictional character</span>
               <span>Fig. 01</span>
             </div>
           </div>
