@@ -74,6 +74,7 @@ export type SpaceRow = {
   body: string[];
   image: string;
   imageAlt: string;
+  video?: string;
   caption: string;
   meta: { label: string; value: string }[];
 };
