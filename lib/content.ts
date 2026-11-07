@@ -269,22 +269,23 @@ const spacePage: SpacePage = {
   rows: [
     {
       id: 'the-edge',
-      eyebrow: '01 — The edge',
-      title: 'Where the light bends',
+      eyebrow: '01 — Night sky',
+      title: 'Where the stars come into focus',
       summary:
-        'A black hole gives you nothing to photograph — only the ring of light that survives the trip around it.',
+        'Some things in the night sky look like nothing more than distant points of light. But bring them closer, and curiosity takes over.',
       body: [
-        'Some subjects refuse to sit still. A black hole is one of them: there is no surface to point a camera at, only the distortion around it, light arriving from behind and bent into a shape the eye can hold.',
-        'This frame took three passes. The first was too clean, the second too loud, and the third finally felt like something enormous quietly doing its work. Most of the time was spent removing detail, not adding it.',
-        'It lives here as a still, but it began as a shader I broke on purpose — feeding it values that made no physical sense until the ring buckled in a way that felt true.',
+        'On October 24, 2026, I took my Nikon Coolpix P900 and pointed it toward the night sky. Using its powerful optical zoom, I began capturing individual points of light that were barely distinguishable to the naked eye.',
+        'The process wasn’t as simple as pressing the shutter. I moved the camera, searched for the same points again, adjusted my framing, and captured multiple shots. Each image became another small piece of an astronomical puzzle.',
+        'I then compared the approximate region I had photographed with a sky map, which showed the Orion and Taurus constellations, along with Uranus and the Taurid meteor-shower radiants.',
+        'The brightest points brought several possibilities to mind — Rigel, Bellatrix, and other stars in Orion. Their exact identities remain unconfirmed, but the process of locating and investigating them was fascinating in itself.',
+        'What began as an experiment with a camera turned into an exploration of the night sky — a reminder that even a tiny point of light can have an extraordinary story behind it.',
       ],
-      image: '/api/images/portfolio/space.jpg',
-      imageAlt:
-        'A black hole bending light into a bright ring around its horizon',
-      caption: 'Event horizon — third pass',
+      image: '/images/space-first-frame.jpg',
+      imageAlt: 'A few faint stars scattered across a dark night sky',
+      caption: 'Night sky — October 24, 2026',
       meta: [
-        { label: 'Capture', value: 'Studio render, 2026' },
-        { label: 'Process', value: 'WebGL still' },
+        { label: 'Capture', value: 'Nikon Coolpix P900, October 2026' },
+        { label: 'Process', value: 'Night Landscape mode · Approx. 50× optical zoom · Multiple exposures · Sky-map comparison' },
       ],
     },
     {
