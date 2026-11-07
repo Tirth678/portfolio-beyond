@@ -203,7 +203,7 @@ const about = {
     "Alongside my independent work, I lead web development at CODE CLUB, GSFCU, and work on products and experiments through FlinT. My journey spans full-stack engineering, AI research, technical leadership and the occasional rabbit hole that turns into a project. I'm interested in collaborating with people who think deeply, build ambitiously and aren't afraid to explore what hasn't been done yet.",
   ],
   image: '/images/philosophy-portrait.jpg',
-  imageAlt: 'Portrait of a man in a black shirt',
+  imageAlt: 'Portrait of Mike Ross, a fictional character from Suits',
   stats: [
     { value: '6', label: 'Years of practice' },
     { value: '28', label: 'Projects shipped' },
