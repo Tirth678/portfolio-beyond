@@ -48,6 +48,11 @@ export default function ShotsPage() {
             ))}
           </div>
         )}
+        {shots.length > 0 && (
+          <p className="mt-16 border-t border-white/10 pt-8 text-center font-display text-3xl italic text-paper/60 md:mt-24">
+            More shots on the way.
+          </p>
+        )}
       </div>
     </main>
   );
