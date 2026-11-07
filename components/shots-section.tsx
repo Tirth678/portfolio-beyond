@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { HeroSlide } from '@/lib/types';
 
 export function ShotsSection({ shots }: { shots: HeroSlide[] }) {
@@ -46,6 +47,9 @@ export function ShotsSection({ shots }: { shots: HeroSlide[] }) {
             </figure>
           ))}
         </div>
+        <Link href="/shots" className="group mt-10 inline-flex items-center gap-3 border-b border-accent/40 pb-2 font-mono text-[10px] tracking-[0.18em] text-accent uppercase transition-colors hover:border-accent">
+          Explore Shots <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </Link>
       </div>
     </section>
   );

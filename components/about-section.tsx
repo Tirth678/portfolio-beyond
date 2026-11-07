@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { About } from '@/lib/types';
 
 export function AboutSection({ about }: { about: About }) {
@@ -37,6 +38,10 @@ export function AboutSection({ about }: { about: About }) {
                 <p key={paragraph.slice(0, 32)}>{paragraph}</p>
               ))}
             </div>
+
+            <Link href="/philosophy" className="group mt-8 inline-flex items-center gap-3 border-b border-accent/40 pb-2 font-mono text-[10px] tracking-[0.18em] text-accent uppercase transition-colors hover:border-accent">
+              Explore Philosophy <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
 
             <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4">
               {about.stats.map((stat) => (

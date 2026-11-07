@@ -68,7 +68,7 @@ const slides: HeroSlide[] = [
   {
     id: 'space',
     eyebrow: '05 — Beyond',
-    title: 'Space',
+    title: 'Eternity',
     description: 'Where reality fades and imagination takes flight.',
     image: 'portfolio/space.jpg',
     alt: 'A black hole bending light into a bright ring around its horizon',
@@ -149,7 +149,7 @@ const projects: Project[] = [
     slug: 'event-horizon',
     title: 'Event Horizon',
     year: '2024',
-    category: 'Space',
+    category: 'Eternity',
     client: 'Nomad Gallery',
     role: 'Creative development · WebGL',
     summary:
@@ -260,10 +260,10 @@ const PLACEHOLDER_IMAGE = '/images/space.jpg';
 
 const spacePage: SpacePage = {
   eyebrow: '05 — Beyond',
-  title: 'Space',
+  title: 'Eternity',
   standfirst: 'Where reality fades and imagination takes flight.',
   intro: [
-    'Space is the chapter I keep returning to when the work needs to feel bigger than its frame. These frames were made over two years, mostly after dark, mostly waiting.',
+    'Eternity is the chapter I keep returning to when the work needs to feel bigger than its frame. These frames were made over two years, mostly after dark, mostly waiting.',
     'Each pair below sets an image beside the thought it arrived with. Read them in order, or start with whichever one holds your eye.',
   ],
   rows: [

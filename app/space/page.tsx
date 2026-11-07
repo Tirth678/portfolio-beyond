@@ -4,9 +4,9 @@ import { SpaceRows } from '@/components/space-rows';
 import { getSpacePage } from '@/lib/content';
 
 export const metadata: Metadata = {
-  title: 'Space',
+  title: 'Eternity',
   description:
-    'Space — captures, studies and notes on scale, light and the long wait between an image leaving and arriving.',
+    'Eternity — captures, studies and notes on scale, light and the long wait between an image leaving and arriving.',
 };
 
 export default function SpacePage() {
