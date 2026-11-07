@@ -43,7 +43,7 @@ function toProject(row: ProjectRow): Project {
     slug: row.slug,
     title: row.title,
     year: row.year,
-    category: row.category,
+    category: row.category === 'Space' ? 'Eternity' : row.category,
     client: row.client,
     role: row.role,
     summary: row.summary,
@@ -59,6 +59,7 @@ function toProject(row: ProjectRow): Project {
 function decorateProject(project: Project): Project {
   return {
     ...project,
+    category: project.category === 'Space' ? 'Eternity' : project.category,
     cover: mediaUrl(project.cover),
     gallery: project.gallery.map((image) => ({
       ...image,
@@ -72,6 +73,7 @@ function decoratePortfolio(content: PortfolioContent): PortfolioContent {
     ...content,
     slides: content.slides.map((slide) => ({
       ...slide,
+      title: slide.id === 'space' ? 'Eternity' : slide.title,
       image: mediaUrl(slide.image),
     })),
     projects: content.projects.map(decorateProject),
@@ -118,6 +120,7 @@ export async function getPortfolio(): Promise<PortfolioContent> {
     profile,
     slides: slides.map((slide) => ({
       ...slide,
+      title: slide.id === 'space' ? 'Eternity' : slide.title,
       image: mediaUrl(slide.image),
     })),
     projects: projectRows.map(toProject),

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ProcessStep } from '@/lib/types';
 
 export function ProcessSection({ steps }: { steps: ProcessStep[] }) {
@@ -18,6 +19,10 @@ export function ProcessSection({ steps }: { steps: ProcessStep[] }) {
             </p>
           </div>
         </div>
+
+        <Link href="/thoughts" className="group mt-8 inline-flex items-center gap-3 border-b border-accent/40 pb-2 font-mono text-[10px] tracking-[0.18em] text-accent uppercase transition-colors hover:border-accent">
+          Explore Thoughts <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+        </Link>
 
         <ol className="mt-14 border-t border-white/10">
           {steps.map((step) => (

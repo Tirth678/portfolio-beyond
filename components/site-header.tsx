@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react';
 import type { Profile } from '@/lib/types';
 
 const links = [
-  { label: 'Notes', href: '/#notes' },
-  { label: 'Philosophy', href: '/#philosophy' },
-  { label: 'Thoughts', href: '/#thoughts' },
-  { label: 'Shots', href: '/#shots' },
-  { label: 'Space', href: '/space' },
+  { label: 'Notes', href: '/notes' },
+  { label: 'Philosophy', href: '/philosophy' },
+  { label: 'Thoughts', href: '/thoughts' },
+  { label: 'Shots', href: '/shots' },
+  { label: 'Eternity', href: '/space' },
 ];
 
 export function SiteHeader({ profile }: { profile: Profile }) {

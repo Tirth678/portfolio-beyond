@@ -13,7 +13,11 @@ type WorkSectionProps = {
 
 /** Chapters that have their own page instead of filtering the grid. */
 const CHAPTER_PAGES: Record<string, string> = {
-  Space: '/space',
+  Notes: '/notes',
+  Thoughts: '/thoughts',
+  Shots: '/shots',
+  Eternity: '/space',
+  Philosophy: '/philosophy',
 };
 
 export function WorkSection({ initialProjects, categories }: WorkSectionProps) {
