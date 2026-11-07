@@ -68,14 +68,21 @@ function decorateProject(project: Project): Project {
   };
 }
 
+/** Keep the selected chapter artwork consistent with both seeded and database slides. */
+function decorateSlide(slide: HeroSlide): HeroSlide {
+  if (slide.id === 'shots') {
+    return { ...slide, image: '/images/shots-hero.jpg', alt: 'A Gothic cathedral rising into a misty sky' };
+  }
+  if (slide.id === 'space') {
+    return { ...slide, title: 'Eternity', image: '/images/eternity-hero.jpg', alt: 'A black hole drawing streams of code across a starry sky' };
+  }
+  return { ...slide, image: mediaUrl(slide.image) };
+}
+
 function decoratePortfolio(content: PortfolioContent): PortfolioContent {
   return {
     ...content,
-    slides: content.slides.map((slide) => ({
-      ...slide,
-      title: slide.id === 'space' ? 'Eternity' : slide.title,
-      image: mediaUrl(slide.image),
-    })),
+    slides: content.slides.map(decorateSlide),
     projects: content.projects.map(decorateProject),
     about: { ...content.about, image: mediaUrl(content.about.image) },
   };
@@ -118,11 +125,7 @@ export async function getPortfolio(): Promise<PortfolioContent> {
 
   return {
     profile,
-    slides: slides.map((slide) => ({
-      ...slide,
-      title: slide.id === 'space' ? 'Eternity' : slide.title,
-      image: mediaUrl(slide.image),
-    })),
+    slides: slides.map(decorateSlide),
     projects: projectRows.map(toProject),
     about: { ...about, image: mediaUrl(about.image) },
     process,

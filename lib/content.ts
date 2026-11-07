@@ -62,16 +62,16 @@ const slides: HeroSlide[] = [
     eyebrow: '04 — Through a lens',
     title: 'Shots',
     description: 'That fleeting moment when the world is dipped in gold.',
-    image: 'portfolio/shots.jpg',
-    alt: 'Pink pencil sketch of a pair of eyes looking directly ahead',
+    image: '/images/shots-hero.jpg',
+    alt: 'A Gothic cathedral rising into a misty sky',
   },
   {
     id: 'space',
     eyebrow: '05 — Beyond',
     title: 'Eternity',
     description: 'Where reality fades and imagination takes flight.',
-    image: 'portfolio/space.jpg',
-    alt: 'A black hole bending light into a bright ring around its horizon',
+    image: '/images/eternity-hero.jpg',
+    alt: 'A black hole drawing streams of code across a starry sky',
   },
 ];
 
