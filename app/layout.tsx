@@ -10,6 +10,7 @@ import '@fontsource/cormorant-garamond/400-italic.css';
 import '@fontsource/cormorant-garamond/500-italic.css';
 import '@fontsource/cormorant-garamond/600-italic.css';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import { RouteLoader } from '@/components/route-loader';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { SiteFooter } from '@/components/site-footer';
@@ -85,6 +86,7 @@ export default async function RootLayout({
         <SiteFooter profile={profile} />
         <ScrollReveal />
         <RouteLoader />
+        <Analytics />
       </body>
     </html>
   );
