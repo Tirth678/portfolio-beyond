@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 // The supplied codeflower preset, adapted to the site's monochrome palette.
-const SOURCE = '/ascii-editor/demos/generated/ref-098.webp';
+const SOURCE = '/images/codeflower-source.png';
 const CELL_SIZE = 13;
 const CHARACTERS = ' .,:;irsXA253hMHGS#9B&@';
 
