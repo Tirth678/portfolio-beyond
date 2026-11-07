@@ -70,8 +70,8 @@ const slides: HeroSlide[] = [
     eyebrow: '05 — Beyond',
     title: 'Eternity',
     description: 'Where reality fades and imagination takes flight.',
-    image: '/images/eternity-hero.jpg',
-    alt: 'A black hole drawing streams of code across a starry sky',
+    image: '/images/eternity-night-sky.jpg',
+    alt: 'The Milky Way above clouds in a black-and-white night sky',
   },
 ];
 

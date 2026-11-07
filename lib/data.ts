@@ -74,7 +74,7 @@ function decorateSlide(slide: HeroSlide): HeroSlide {
     return { ...slide, image: '/images/shots-hero.jpg', alt: 'A Gothic cathedral rising into a misty sky' };
   }
   if (slide.id === 'space') {
-    return { ...slide, title: 'Eternity', image: '/images/eternity-hero.jpg', alt: 'A black hole drawing streams of code across a starry sky' };
+    return { ...slide, title: 'Eternity', image: '/images/eternity-night-sky.jpg', alt: 'The Milky Way above clouds in a black-and-white night sky' };
   }
   return { ...slide, image: mediaUrl(slide.image) };
 }
