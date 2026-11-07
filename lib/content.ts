@@ -274,7 +274,7 @@ const spacePage: SpacePage = {
       summary:
         'Some things in the night sky look like nothing more than distant points of light. But bring them closer, and curiosity takes over.',
       body: [
-        'On October 24, 2026, I took my Nikon Coolpix P900 and pointed it toward the night sky. Using its powerful optical zoom, I began capturing individual points of light that were barely distinguishable to the naked eye.',
+        'On October 24, 2026, I began capturing individual points of light that were barely distinguishable to the naked eye.',
         'The process wasn’t as simple as pressing the shutter. I moved the camera, searched for the same points again, adjusted my framing, and captured multiple shots. Each image became another small piece of an astronomical puzzle.',
         'I then compared the approximate region I had photographed with a sky map, which showed the Orion and Taurus constellations, along with Uranus and the Taurid meteor-shower radiants.',
         'The brightest points brought several possibilities to mind — Rigel, Bellatrix, and other stars in Orion. Their exact identities remain unconfirmed, but the process of locating and investigating them was fascinating in itself.',
@@ -296,7 +296,7 @@ const spacePage: SpacePage = {
         'Saturn doesn’t announce itself. From Earth, it can look like just another point of light, quietly shining among thousands of stars. But that little point is a world of its own, surrounded by rings made of ice, rock, and dust.',
       body: [
         'I found it while exploring the night sky. One bright object caught my attention, and I began narrowing down its position. What initially looked like an ordinary star turned out to be Saturn — a planet nearly 1.3 billion kilometres away.',
-        'I used the sky-map application to cross-check its position, then turned my Nikon Coolpix P900 toward it. At 83× optical zoom, I could bring that distant world into the frame, transforming a tiny point of light into something I could actually observe.',
+        'I used the sky-map application to cross-check its position. At 83× optical zoom, I could bring that distant world into the frame, transforming a tiny point of light into something I could actually observe.',
         'There is something extraordinary about realizing that the light reaching your camera began its journey across space long before you decided to look up. I wasn’t just photographing a bright object in the sky. I was observing another planet in our Solar System.',
         'For a moment, the distance between us felt a little less impossible.',
       ],
@@ -318,7 +318,7 @@ const spacePage: SpacePage = {
         'Neptune is not a planet you simply stumble upon. Nearly 4.5 billion kilometres from the Sun, it is so distant and faint that finding it requires patience, the right conditions, and a little curiosity.',
       body: [
         'After locating Saturn, I continued exploring the night sky. While navigating the region around Pisces and Aquarius, I came across another faint object. Unlike Saturn, it wasn’t immediately visible to the naked eye. It was barely distinguishable, even through the camera.',
-        'I used a sky-map application to narrow down its position and pointed my Nikon Coolpix P900 toward the target. At 83× optical zoom, I managed to capture a faint point of light.',
+        'I used a sky-map application to narrow down its position. At 83× optical zoom, I managed to capture a faint point of light.',
         'Further investigation suggested that the object could be Neptune, the eighth planet of our Solar System. On September 24, 2026, Neptune was around magnitude 7.7, making it far too faint for ordinary naked-eye observation.',
         'What fascinated me most was the realization that this tiny point of light could belong to a planet billions of kilometres away. Unlike Saturn, its rings aren’t visible through my camera. At that distance, even an entire planet can appear as little more than a speck of light.',
         'Sometimes discovery isn’t about seeing more. It’s about learning what you’re looking at.',
