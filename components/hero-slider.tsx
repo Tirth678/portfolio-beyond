@@ -81,6 +81,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const renderRef = useRef<(() => void) | null>(null);
   const texturesRef = useRef<(THREE.Texture | null)[]>([]);
   const [webglUnavailable, setWebglUnavailable] = useState(false);
   const activeRef = useRef(0);
@@ -126,12 +127,17 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
     materialRef.current = material;
     scene.add(new THREE.Mesh(geometry, material));
 
+    // The image is static between slide transitions. Render only when the
+    // scene changes instead of keeping the GPU busy on every animation frame.
+    const render = () => renderer.render(scene, camera);
+    renderRef.current = render;
     const resize = () => {
       const width = host.clientWidth;
       const height = host.clientHeight;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(width, height, false);
       material.uniforms.uResolution.value.set(width, height);
+      render();
     };
     renderer.setClearColor('#0a0a0a', 1);
     resize();
@@ -139,13 +145,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(host);
 
-    let frame = 0;
     let disposed = false;
-    const render = () => {
-      frame = window.requestAnimationFrame(render);
-      renderer.render(scene, camera);
-    };
-    render();
 
     const loader = new THREE.TextureLoader();
     loader.setCrossOrigin('anonymous');
@@ -168,6 +168,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
         dimensions.naturalHeight || dimensions.height,
       );
       material.uniforms.uTexture2Size.value.copy(material.uniforms.uTexture1Size.value);
+      render();
       setReady(true);
     };
     Promise.all(slides.map((slide, index) => new Promise<THREE.Texture | null>((resolve) => {
@@ -196,7 +197,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
 
     return () => {
       disposed = true;
-      window.cancelAnimationFrame(frame);
+      renderRef.current = null;
       window.removeEventListener('resize', resize);
       resizeObserver.disconnect();
       gsap.killTweensOf(material.uniforms.uProgress);
@@ -266,6 +267,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
       value: 1,
       duration: 1.45,
       ease: 'power2.inOut',
+      onUpdate: () => renderRef.current?.(),
       onComplete: () => {
         material.uniforms.uTexture1.value = nextTexture;
         material.uniforms.uTexture1FitMobile.value = material.uniforms.uTexture2FitMobile.value;
