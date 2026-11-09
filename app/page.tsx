@@ -5,22 +5,21 @@ import { Marquee } from '@/components/marquee';
 import { ProcessSection } from '@/components/process-section';
 import { ShotsSection } from '@/components/shots-section';
 import { WorkSection } from '@/components/work-section';
-import { categoriesOf, getPortfolio } from '@/lib/data';
+import { getPortfolio } from '@/lib/data';
 import { getGithubActivity } from '@/lib/github';
 import LogoCloud from '@/components/ui/logo-cloud';
 
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const { profile, slides, projects, about, process, contact } = await getPortfolio();
-  const categories = ['All', ...categoriesOf(projects)];
+  const { profile, slides, about, process, contact } = await getPortfolio();
   const github = await getGithubActivity();
 
   return (
     <main>
       <HeroSlider slides={slides} tagline={profile.tagline} />
       <Marquee items={about.capabilities} />
-      <WorkSection initialProjects={projects} categories={categories} />
+      <WorkSection slides={slides} />
       <AboutSection about={about} />
       <ProcessSection steps={process} />
       <ShotsSection shots={slides} />
