@@ -117,3 +117,22 @@ To add CLI-managed shadcn components in future, run `npx shadcn@latest init`
 and choose `components/ui` and `app/globals.css` when prompted; review the
 proposed configuration and style changes before accepting them. The GitHub
 component uses the existing portfolio theme and does not require that setup.
+
+## Diwali cracker studio (`/crackers`)
+
+A full-screen, camera-based cracker show. The visitor's camera is drawn behind
+the stage, both hands are tracked with MediaPipe Hands, and the crackers are
+drawn on top of the video.
+
+- **Select:** a quick pinch (thumb to index finger) over a cracker in the tray.
+- **Fire:** two quick pinches within about half a second, anywhere on the stage.
+- Mouse and touch work the same way (click, then double-click). Keys `1`–`5`
+  select, `Space` fires, `M` mutes. "Play without camera" uses the mouse only.
+
+Implementation lives in [components/crackers](components/crackers):
+`cracker-studio.tsx` (camera, canvas, tap logic), `hand-tracking.ts` (MediaPipe
+loader, coordinate mapping, pinch detector), `fireworks.ts` (particle engine and
+the five cracker recipes), and `sound.ts` (Web Audio synthesis, no audio files).
+The MediaPipe runtime and model are loaded at runtime from jsDelivr
+(`@mediapipe/hands@0.4.1675469240`), so the browser needs internet access and
+camera permission.
