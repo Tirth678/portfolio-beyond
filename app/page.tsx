@@ -6,12 +6,15 @@ import { ProcessSection } from '@/components/process-section';
 import { ShotsSection } from '@/components/shots-section';
 import { WorkSection } from '@/components/work-section';
 import { categoriesOf, getPortfolio } from '@/lib/data';
+import { getGithubActivity } from '@/lib/github';
+import LogoCloud from '@/components/ui/logo-cloud';
 
 export const revalidate = 300;
 
 export default async function HomePage() {
   const { profile, slides, projects, about, process, contact } = await getPortfolio();
   const categories = ['All', ...categoriesOf(projects)];
+  const github = await getGithubActivity();
 
   return (
     <main>
@@ -22,6 +25,7 @@ export default async function HomePage() {
       <ProcessSection steps={process} />
       <ShotsSection shots={slides} />
       <ContactSection contact={contact} profile={profile} />
+      <LogoCloud username="Tirth678" contributions={github.contributions} summary={github.summary} brandLogos={github.languages} />
     </main>
   );
 }
