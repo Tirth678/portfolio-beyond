@@ -12,6 +12,8 @@ const links = [
   { label: 'Eternity', href: '/space' },
 ];
 
+const menuDelays = ['delay-[80ms]', 'delay-[140ms]', 'delay-[200ms]', 'delay-[260ms]', 'delay-[320ms]'];
+
 export function SiteHeader({ profile }: { profile: Profile }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,6 +41,13 @@ export function SiteHeader({ profile }: { profile: Profile }) {
       document.body.style.overflow = previousOverflow;
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const closeOnDesktop = () => { if (desktop.matches) setMenuOpen(false); };
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => desktop.removeEventListener('change', closeOnDesktop);
+  }, []);
 
   return (
     <>
@@ -91,21 +100,24 @@ export function SiteHeader({ profile }: { profile: Profile }) {
         </div>
       </header>
 
-      {menuOpen ? (
-        <div
-          id="mobile-menu"
-          className="fixed inset-x-0 top-[76px] bottom-0 z-40 flex flex-col bg-ink/95 backdrop-blur-xl md:hidden"
-        >
-          <nav
-            aria-label="Sections"
-            className="shell flex flex-1 flex-col justify-center"
-          >
+      <div
+        id="mobile-menu"
+        aria-hidden={!menuOpen}
+        inert={!menuOpen}
+        className={`fixed inset-x-0 top-[76px] bottom-0 z-40 overflow-y-auto bg-ink md:hidden transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+          menuOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
+        }`}
+      >
+        <div className="flex min-h-full flex-col">
+          <nav aria-label="Sections" className="shell flex flex-1 flex-col justify-center py-8">
             {links.map((link, index) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="group flex items-baseline gap-4 border-b border-white/10 py-4 first:border-t"
+                className={`group flex items-baseline gap-4 border-b border-white/10 py-4 first:border-t transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                  menuOpen ? `translate-y-0 opacity-100 ${menuDelays[index]}` : 'translate-y-4 opacity-0 delay-0'
+                }`}
               >
                 <span className="font-mono text-[9px] tracking-[0.2em] text-accent/70">
                   {String(index + 1).padStart(2, '0')}
@@ -113,29 +125,21 @@ export function SiteHeader({ profile }: { profile: Profile }) {
                 <span className="font-display text-4xl tracking-[-0.02em] text-paper/85 transition-colors group-hover:text-accent">
                   {link.label}
                 </span>
-                <span
-                  aria-hidden="true"
-                  className="ml-auto font-mono text-xs text-paper/30"
-                >
-                  ↗
-                </span>
+                <span aria-hidden="true" className="ml-auto font-mono text-xs text-paper/30">↗</span>
               </Link>
             ))}
           </nav>
 
-          <div className="shell pb-10">
+          <div className={`shell pb-10 transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${menuOpen ? 'translate-y-0 opacity-100 delay-[320ms]' : 'translate-y-3 opacity-0 delay-0'}`}>
             <p className="font-mono text-[9px] tracking-[0.18em] text-paper/40 uppercase">
               {profile.availability}
             </p>
-            <a
-              href={`mailto:${profile.email}`}
-              className="mt-2 inline-block font-mono text-[10px] tracking-[0.18em] text-accent uppercase"
-            >
+            <a href={`mailto:${profile.email}`} className="mt-2 inline-block font-mono text-[10px] tracking-[0.18em] text-accent uppercase">
               {profile.email}
             </a>
           </div>
         </div>
-      ) : null}
+      </div>
     </>
   );
 }
