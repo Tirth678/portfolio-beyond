@@ -466,7 +466,7 @@ export function CrackerStudio() {
           : 'Hand tracking idle';
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-hidden bg-black text-paper select-none touch-none">
+    <div className="fixed inset-0 z-[200] overflow-hidden bg-black text-paper select-none touch-none">
       <video
         ref={videoRef}
         playsInline

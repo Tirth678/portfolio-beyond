@@ -104,7 +104,9 @@ export function RouteLoader() {
     finish();
   }, [pathname, finish]);
 
-  if (phase === 'idle') return null;
+  // The cracker studio is a full-screen app with its own camera start screen;
+  // the portfolio boot loader would otherwise sit on top of it.
+  if (phase === 'idle' || pathname === '/crackers') return null;
 
   const loading = phase === 'loading';
 
