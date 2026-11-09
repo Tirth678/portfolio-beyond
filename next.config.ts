@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/webp'],
   },
+  // Sandboxed previews are served from *.e2b.app; allow their dev resources.
+  allowedDevOrigins: ['*.e2b.app'],
 };
 
 export default nextConfig;
