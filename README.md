@@ -101,3 +101,19 @@ service is required.
 
 **Placeholders to replace:** some profile details, stats and project copy in
 `lib/content.ts` are sample content.
+
+### GitHub activity component
+
+The homepage's `components/ui/logo-cloud.tsx` uses public GitHub contribution
+activity and the primary languages of up to 100 recently updated public,
+non-fork repositories. GitHub data is cached for one hour; if a request fails,
+the component shows a link to GitHub instead of fabricated activity. Language
+marks are bundled from Simple Icons, not stock photography.
+
+This project already has TypeScript, Tailwind CSS, the `@/` alias, and the
+`components/ui` folder (shared UI components live there; global styles are in
+`app/globals.css`). It does not currently have a shadcn CLI `components.json`.
+To add CLI-managed shadcn components in future, run `npx shadcn@latest init`
+and choose `components/ui` and `app/globals.css` when prompted; review the
+proposed configuration and style changes before accepting them. The GitHub
+component uses the existing portfolio theme and does not require that setup.

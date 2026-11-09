@@ -55,8 +55,8 @@ export default async function ThoughtsPage() {
                   </div>
                   <div className="md:col-span-8">
                     <h3 className="max-w-4xl font-display text-[clamp(2.8rem,6vw,6rem)] leading-[0.98] tracking-[-0.03em] transition-colors group-hover:text-accent">{featured.title}</h3>
-                    {featured.excerpt && <p className="mt-6 max-w-xl text-sm leading-7 text-paper/55">{featured.excerpt}</p>}
-                    <span className="mt-8 inline-block font-mono text-[10px] tracking-[0.18em] text-paper/55 uppercase">Read on Substack <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></span>
+                    {featured.preview.length > 0 && <div className="mt-6 max-w-2xl space-y-4 text-[15px] leading-7 text-paper/60">{featured.preview.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div>}
+                    <span className="mt-8 inline-block font-mono text-[10px] tracking-[0.18em] text-paper/55 uppercase">Continue reading on Substack <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></span>
                   </div>
                   <span aria-hidden="true" className="hidden text-right text-2xl text-paper/35 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 md:col-span-1 md:block">↗</span>
                 </div>
@@ -66,7 +66,7 @@ export default async function ThoughtsPage() {
                 {archive.map((post, index) => (
                   <a key={post.url} href={post.url} target="_blank" rel="noopener noreferrer" data-reveal className="group grid gap-3 border-t border-white/10 py-7 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent md:grid-cols-12 md:gap-6 md:py-9">
                     <span className="font-mono text-[10px] tracking-[0.18em] text-paper/35 uppercase md:col-span-3">{String(index + 2).padStart(2, '0')} {post.date && <> / <time dateTime={post.date}>{dateFormatter.format(new Date(post.date))}</time></>}</span>
-                    <div className="md:col-span-8"><h3 className="font-display text-[clamp(2rem,3.3vw,3.5rem)] leading-[1.05] transition-colors group-hover:text-accent">{post.title}</h3>{post.excerpt && <p className="mt-3 max-w-xl text-sm leading-7 text-paper/50">{post.excerpt}</p>}</div>
+                    <div className="md:col-span-8"><h3 className="font-display text-[clamp(2rem,3.3vw,3.5rem)] leading-[1.05] transition-colors group-hover:text-accent">{post.title}</h3>{post.preview.length > 0 && <div className="mt-4 max-w-2xl space-y-3 text-sm leading-7 text-paper/55">{post.preview.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}</div>}<span className="mt-5 inline-block font-mono text-[10px] tracking-[0.16em] text-paper/55 uppercase transition-colors group-hover:text-accent">Continue reading on Substack ↗</span></div>
                     <span aria-hidden="true" className="hidden text-right text-paper/35 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 md:col-span-1 md:block">↗</span><span className="sr-only"> Opens on Substack in a new tab.</span>
                   </a>
                 ))}
