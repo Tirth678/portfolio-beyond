@@ -1,12 +1,9 @@
-import type { Metadata } from 'next';
+import { chapterMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { getSubstackPosts, SUBSTACK_URL } from '@/lib/substack';
 
-export const metadata: Metadata = {
-  title: 'Thoughts',
-  description: 'Essays and reflections by Tirth, published on Substack.',
-};
+export const metadata = chapterMetadata('Thoughts', 'Read previews of essays and reflections by Tirth S Pandya, published on Substack.', '/thoughts');
 
 const dateFormatter = new Intl.DateTimeFormat('en', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
 

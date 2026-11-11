@@ -1,12 +1,9 @@
-import type { Metadata } from 'next';
+import { chapterMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { philosophyImages } from '@/lib/philosophy';
 
-export const metadata: Metadata = {
-  title: 'Philosophy',
-  description: 'Philosophy — a chapter for ideas, beliefs and reflections.',
-};
+export const metadata = chapterMetadata('Philosophy', 'Poems, ideas and reflections by Tirth S Pandya.', '/philosophy');
 
 export default function PhilosophyPage() {
   return (

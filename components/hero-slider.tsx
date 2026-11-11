@@ -330,7 +330,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
             {tagline}
           </p>
           <p className="slide-eyebrow">{slide.eyebrow}</p>
-          <h1 className="slide-title">
+          <h2 className="slide-title">
             <button
               type="button"
               className="slide-title-button"
@@ -339,7 +339,7 @@ export function HeroSlider({ slides, tagline }: HeroSliderProps) {
             >
               {slide.title}
             </button>
-          </h1>
+          </h2>
           <p className="slide-description">{slide.description}</p>
         </section>
       </div>

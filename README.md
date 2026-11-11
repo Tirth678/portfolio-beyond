@@ -38,7 +38,15 @@ neon env pull    # refresh credentials in .env.local
 
 `.env.local` is gitignored; never commit it. `NEXT_PUBLIC_SITE_URL` sets the
 absolute origin used for Open Graph metadata. If unset, the app uses Vercel's
-`VERCEL_PROJECT_PRODUCTION_URL` when available, or localhost for local development.
+`VERCEL_PROJECT_PRODUCTION_URL` when available, the current Vercel production
+URL in production, or localhost during development. Set `NEXT_PUBLIC_SITE_URL`
+to the full canonical HTTPS origin if you add a custom domain.
+
+`/sitemap.xml` lists the published chapters, and `/robots.txt` points crawlers
+to it. Notes and the legacy sample `/work/*` pages are marked `noindex` until
+their content is ready; remove those directives when publishing real content.
+Vercel preview deployments are marked `noindex`. After deployment, submit the
+sitemap in Google Search Console and inspect the live pages and social previews.
 
 ## Content workflow
 
@@ -104,11 +112,11 @@ service is required.
 
 ### GitHub activity component
 
-The homepage's `components/ui/logo-cloud.tsx` uses public GitHub contribution
-activity and the primary languages of up to 100 recently updated public,
-non-fork repositories. GitHub data is cached for one hour; if a request fails,
-the component shows a link to GitHub instead of fabricated activity. Language
-marks are bundled from Simple Icons, not stock photography.
+The homepage's `components/ui/contribution-skyline.tsx` displays public GitHub
+contribution counts as a 2D heat map or 3D skyline. Counts are read from GitHub's
+public contribution calendar and cached for one hour. If GitHub is unavailable
+or its markup changes, the section links to the profile rather than showing
+fabricated activity. The skyline uses the site's black-and-gold palette.
 
 This project already has TypeScript, Tailwind CSS, the `@/` alias, and the
 `components/ui` folder (shared UI components live there; global styles are in
