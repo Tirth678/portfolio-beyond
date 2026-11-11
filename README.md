@@ -104,11 +104,11 @@ service is required.
 
 ### GitHub activity component
 
-The homepage's `components/ui/logo-cloud.tsx` uses public GitHub contribution
-activity and the primary languages of up to 100 recently updated public,
-non-fork repositories. GitHub data is cached for one hour; if a request fails,
-the component shows a link to GitHub instead of fabricated activity. Language
-marks are bundled from Simple Icons, not stock photography.
+The homepage's `components/ui/contribution-skyline.tsx` displays public GitHub
+contribution counts as a 2D heat map or 3D skyline. Counts are read from GitHub's
+public contribution calendar and cached for one hour. If GitHub is unavailable
+or its markup changes, the section links to the profile rather than showing
+fabricated activity. The skyline uses the site's black-and-gold palette.
 
 This project already has TypeScript, Tailwind CSS, the `@/` alias, and the
 `components/ui` folder (shared UI components live there; global styles are in
