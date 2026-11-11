@@ -15,7 +15,6 @@ import { RouteLoader } from '@/components/route-loader';
 import { ScrollReveal } from '@/components/scroll-reveal';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { ImperialQuote } from '@/components/imperial-quote';
 import { getProfile } from '@/lib/data';
 import { homeDescription, homeTitle, siteUrl, socialImage } from '@/lib/seo';
 
@@ -56,7 +55,6 @@ export default async function RootLayout({
         <SiteHeader profile={profile} />
         {children}
         <SiteFooter profile={profile} />
-        <ImperialQuote />
         <ScrollReveal />
         <RouteLoader />
         <Analytics />
