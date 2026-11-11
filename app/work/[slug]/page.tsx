@@ -33,6 +33,9 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
+    // These legacy routes currently contain sample projects, not published work.
+    robots: { index: false, follow: true },
+    alternates: { canonical: `/work/${encodeURIComponent(project.slug)}` },
     openGraph: {
       title: project.title,
       description: project.summary,

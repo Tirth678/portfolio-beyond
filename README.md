@@ -38,7 +38,15 @@ neon env pull    # refresh credentials in .env.local
 
 `.env.local` is gitignored; never commit it. `NEXT_PUBLIC_SITE_URL` sets the
 absolute origin used for Open Graph metadata. If unset, the app uses Vercel's
-`VERCEL_PROJECT_PRODUCTION_URL` when available, or localhost for local development.
+`VERCEL_PROJECT_PRODUCTION_URL` when available, the current Vercel production
+URL in production, or localhost during development. Set `NEXT_PUBLIC_SITE_URL`
+to the full canonical HTTPS origin if you add a custom domain.
+
+`/sitemap.xml` lists the published chapters, and `/robots.txt` points crawlers
+to it. Notes and the legacy sample `/work/*` pages are marked `noindex` until
+their content is ready; remove those directives when publishing real content.
+Vercel preview deployments are marked `noindex`. After deployment, submit the
+sitemap in Google Search Console and inspect the live pages and social previews.
 
 ## Content workflow
 

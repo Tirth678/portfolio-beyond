@@ -1,13 +1,10 @@
-import type { Metadata } from 'next';
+import { chapterMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { shots } from '@/lib/shots';
 import { AsciiComingSoon } from '@/components/ascii-coming-soon';
 
-export const metadata: Metadata = {
-  title: 'Shots',
-  description: 'A collection of photographs, each with its date and time.',
-};
+export const metadata = chapterMetadata('Shots', 'A collection of photographs by Tirth S Pandya, each marked with its date and time.', '/shots');
 
 export default function ShotsPage() {
   return (

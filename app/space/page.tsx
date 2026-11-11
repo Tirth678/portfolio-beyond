@@ -1,13 +1,9 @@
-import type { Metadata } from 'next';
+import { chapterMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { SpaceRows } from '@/components/space-rows';
 import { getSpacePage } from '@/lib/content';
 
-export const metadata: Metadata = {
-  title: 'Eternity',
-  description:
-    'Eternity — captures, studies and notes on scale, light and the long wait between an image leaving and arriving.',
-};
+export const metadata = chapterMetadata('Eternity', 'Explore Tirth S Pandya’s night-sky photography and observations of stars and planets.', '/space');
 
 export default function SpacePage() {
   const { eyebrow, title, standfirst, intro, rows } = getSpacePage();

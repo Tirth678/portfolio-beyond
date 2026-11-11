@@ -8,6 +8,7 @@ import { WorkSection } from '@/components/work-section';
 import { getPortfolio } from '@/lib/data';
 import { getGithubActivity } from '@/lib/github';
 import { GithubSection } from '@/components/github-section';
+import { siteUrl } from '@/lib/seo';
 
 export const revalidate = 300;
 
@@ -17,6 +18,12 @@ export default async function HomePage() {
 
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org', '@type': 'Person', name: profile.name,
+        url: siteUrl, jobTitle: 'Developer and creative technologist',
+        sameAs: profile.socials.flatMap((social) => social.href?.startsWith('https://') ? [social.href] : []),
+      }).replace(/</g, '\u003c') }} />
+      <h1 className="sr-only">Tirth S Pandya — Portfolio Beyond Engineering</h1>
       <HeroSlider slides={slides} tagline={profile.tagline} />
       <Marquee items={about.capabilities} />
       <WorkSection slides={slides} />

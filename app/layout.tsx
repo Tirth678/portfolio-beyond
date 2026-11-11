@@ -17,50 +17,21 @@ import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { ImperialQuote } from '@/components/imperial-quote';
 import { getProfile } from '@/lib/data';
+import { homeDescription, homeTitle, siteUrl, socialImage } from '@/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000');
-
-export async function generateMetadata(): Promise<Metadata> {
-  const profile = await getProfile();
-  const siteTitle = `${profile.name} — Portfolio Beyond Engineering`;
-
-  return {
-    metadataBase: new URL(siteUrl),
-    title: {
-      default: siteTitle,
-      template: `%s — ${profile.name}`,
-    },
-    description: profile.intro,
-    keywords: [
-      'portfolio',
-      'visual designer',
-      'creative developer',
-      'art direction',
-      profile.name,
-    ],
-    openGraph: {
-      type: 'website',
-      siteName: profile.name,
-      title: siteTitle,
-      description: profile.intro,
-      images: [
-        {
-          url: '/images/thoughts.jpg',
-          width: 1200,
-          height: 675,
-          alt: 'A caped figure watching a rain-soaked city at night',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: siteTitle,
-      description: profile.intro,
-      images: ['/images/thoughts.jpg'],
-    },
-  };
-}
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: { default: homeTitle, template: '%s — Tirth S Pandya' },
+  description: homeDescription,
+  alternates: { canonical: '/' },
+  robots: process.env.VERCEL_ENV === 'preview' ? { index: false, follow: false } : { index: true, follow: true },
+  openGraph: {
+    type: 'website', siteName: 'Tirth S Pandya', title: homeTitle,
+    description: homeDescription, url: '/',
+    images: [{ url: socialImage, width: 1200, height: 630, alt: 'The Sombrero Galaxy against a star-filled sky' }],
+  },
+  twitter: { card: 'summary_large_image', title: homeTitle, description: homeDescription, images: [socialImage] },
+};
 
 export const viewport: Viewport = {
   themeColor: '#0a0a0a',
@@ -80,7 +51,7 @@ export default async function RootLayout({
       <body id="top" className="bg-ink text-paper antialiased">
         <noscript>
           {/* The loader is dismissed by script; without it, keep the page usable. */}
-          <style>{'[data-route-loader]{display:none}'}</style>
+          <style>{'[data-route-loader]{display:none}[data-reveal]{opacity:1!important;transform:none!important}'}</style>
         </noscript>
         <SiteHeader profile={profile} />
         {children}
