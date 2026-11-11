@@ -8,6 +8,7 @@ import { WorkSection } from '@/components/work-section';
 import { getPortfolio } from '@/lib/data';
 import { getGithubActivity } from '@/lib/github';
 import LogoCloud from '@/components/ui/logo-cloud';
+import { FlintStatus } from '@/components/flint-status';
 
 export const revalidate = 300;
 
@@ -22,7 +23,8 @@ export default async function HomePage() {
       <WorkSection slides={slides} />
       <AboutSection about={about} />
       <ProcessSection steps={process} />
-      <ShotsSection shots={slides} />
+      <ShotsSection />
+      <FlintStatus />
       <ContactSection contact={contact} profile={profile} />
       <LogoCloud username="Tirth678" contributions={github.contributions} summary={github.summary} brandLogos={github.languages} />
     </main>
