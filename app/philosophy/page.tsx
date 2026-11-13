@@ -1,5 +1,5 @@
 import { chapterMetadata } from '@/lib/seo';
-import Image from 'next/image';
+import { LoadingImage } from '@/components/loading-image';
 import Link from 'next/link';
 import { philosophyImages } from '@/lib/philosophy';
 
@@ -37,7 +37,7 @@ export default function PhilosophyPage() {
           {philosophyImages.map((image, index) => (
             <figure key={image.src} data-reveal>
               <a href={image.src} target="_blank" rel="noopener noreferrer" aria-label={`Open reflection ${String(index + 1).padStart(2, '0')} in full size (opens in a new tab)`} className="group block overflow-hidden bg-white/5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent">
-                <Image src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 768px) 100vw, 50vw" className="h-auto w-full transition-opacity duration-300 group-hover:opacity-90" />
+                <LoadingImage src={image.src} alt={image.alt} width={image.width} height={image.height} sizes="(max-width: 768px) 100vw, 50vw" className="h-auto w-full transition-opacity duration-300 group-hover:opacity-90" />
               </a>
               <figcaption className="mt-4 flex justify-between font-mono text-[9px] tracking-[0.18em] text-paper/35 uppercase">
                 <span>Reflection {String(index + 1).padStart(2, '0')}</span><span aria-hidden="true">↗</span>

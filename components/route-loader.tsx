@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AbstractCubeIsometricLoader } from '@/components/ui/abstract-cube-isometric-loader';
+import { FacetBloomLoader } from '@/components/ui/facet-bloom-loader';
 
 /** Keeps the loader on screen long enough to read, even on instant routes. */
 const MIN_VISIBLE_MS = 100;
@@ -11,6 +11,11 @@ const FADE_MS = 250;
 const SAFETY_MS = 8000;
 
 type Phase = 'loading' | 'leaving' | 'idle';
+
+function loadingLabel(path: string) {
+  const name: Record<string, string> = { '/': 'Portfolio', '/notes': 'Notes', '/philosophy': 'Philosophy', '/thoughts': 'Thoughts', '/shots': 'Shots', '/space': 'Eternity' };
+  return `Loading ${name[path] ?? (path.startsWith('/work/') ? 'project' : 'page')}`;
+}
 
 /**
  * Full-screen loader shown while the site boots and whenever a link moves the
@@ -21,6 +26,7 @@ type Phase = 'loading' | 'leaving' | 'idle';
 export function RouteLoader() {
   const pathname = usePathname();
   const [phase, setPhase] = useState<Phase>('loading');
+  const [destination, setDestination] = useState<string | null>(null);
   const shownAt = useRef(0);
   const pending = useRef(false);
   const timer = useRef<number | undefined>(undefined);
@@ -84,6 +90,7 @@ export function RouteLoader() {
       if (url.pathname === window.location.pathname) return;
 
       pending.current = true;
+      setDestination(url.pathname);
       show();
 
       window.clearTimeout(timer.current);
@@ -117,19 +124,11 @@ export function RouteLoader() {
       }`}
       style={{ pointerEvents: loading ? 'auto' : 'none' }}
     >
-      <span role="status" aria-live="polite" className="flex flex-col items-center gap-7">
-        <span aria-hidden="true" className="text-accent">
-          <AbstractCubeIsometricLoader
-            dotSize={6}
-            gap={4}
-            speed={1.1}
-            bloom
-          />
-        </span>
-        <span className="font-mono text-[9px] tracking-[0.28em] text-paper/45 uppercase">
-          Loading
-        </span>
-      </span>
+      <FacetBloomLoader
+        label={loadingLabel(destination ?? pathname)}
+        size={52}
+        className="flex-col text-accent"
+      />
     </div>
   );
 }
