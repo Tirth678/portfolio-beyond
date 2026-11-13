@@ -1,5 +1,5 @@
 import { chapterMetadata } from '@/lib/seo';
-import Image from 'next/image';
+import { LoadingImage } from '@/components/loading-image';
 import Link from 'next/link';
 import { shots } from '@/lib/shots';
 import { AsciiComingSoon } from '@/components/ascii-coming-soon';
@@ -36,7 +36,7 @@ export default function ShotsPage() {
             {shots.map((shot, index) => (
               <figure key={`${shot.src}-${index}`} data-reveal className={index % 2 === 1 ? 'md:mt-16' : ''}>
                 <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
-                  <Image src={shot.src} alt={shot.alt} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" />
+                  <LoadingImage src={shot.src} alt={shot.alt} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" />
                 </div>
                 <figcaption className="mt-4 flex flex-wrap justify-between gap-3 font-mono text-[10px] tracking-[0.16em] text-paper/50 uppercase">
                   <span>{shot.date}</span><span>{shot.time}</span>

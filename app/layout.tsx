@@ -50,7 +50,7 @@ export default async function RootLayout({
       <body id="top" className="bg-ink text-paper antialiased">
         <noscript>
           {/* The loader is dismissed by script; without it, keep the page usable. */}
-          <style>{'[data-route-loader]{display:none}[data-reveal]{opacity:1!important;transform:none!important}'}</style>
+          <style>{'[data-route-loader],[data-asset-loader]{display:none}[data-reveal]{opacity:1!important;transform:none!important}'}</style>
         </noscript>
         <SiteHeader profile={profile} />
         {children}

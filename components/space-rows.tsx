@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
+import { LoadingImage } from '@/components/loading-image';
 import { useState } from 'react';
+import { AssetLoader } from '@/components/asset-loader';
 import type { SpaceRow } from '@/lib/types';
 
 const isRemote = (src: string) => /^https?:\/\//.test(src);
@@ -17,6 +18,7 @@ function Row({
   open: boolean;
   onToggle: () => void;
 }) {
+  const [videoLoading, setVideoLoading] = useState(Boolean(row.video));
   const panelId = `${row.id}-panel`;
   const titleId = `${row.id}-title`;
   const number = row.eyebrow.slice(0, 2);
@@ -53,12 +55,14 @@ function Row({
                   loop
                   playsInline
                   preload="metadata"
+                  onLoadedData={() => setVideoLoading(false)}
+                  onError={() => setVideoLoading(false)}
                   className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] ${
                     open ? 'scale-[1.03]' : 'group-hover:scale-[1.03]'
                   }`}
                 />
               ) : (
-                <Image
+                <LoadingImage
                   src={row.image}
                   alt={row.imageAlt}
                   fill
@@ -69,6 +73,7 @@ function Row({
                   }`}
                 />
               )}
+              {row.video && <AssetLoader loading={videoLoading} />}
               <div
                 aria-hidden="true"
                 className={`absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent transition-opacity duration-500 ${

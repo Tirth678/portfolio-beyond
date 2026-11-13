@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { LoadingImage } from '@/components/loading-image';
 import Link from 'next/link';
 import { getSpacePage } from '@/lib/content';
 import { philosophyImages } from '@/lib/philosophy';
@@ -71,7 +71,7 @@ export function WorkSection({ slides }: { slides: HeroSlide[] }) {
           {entries.map((entry, index) => (
             <Link key={entry.href} href={entry.href} className={`group block ${index % 2 === 1 ? 'md:mt-24' : ''}`}>
               <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
-                <Image src={entry.image} alt={entry.alt} fill sizes="(max-width: 768px) 100vw, 45vw" className={`${entry.contain ? 'object-contain' : 'object-cover'} transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.045]`} />
+                <LoadingImage src={entry.image} alt={entry.alt} fill sizes="(max-width: 768px) 100vw, 45vw" className={`${entry.contain ? 'object-contain' : 'object-cover'} transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.045]`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <span className="absolute top-4 left-4 font-mono text-[10px] tracking-[0.2em] text-white/70">{String(index + 1).padStart(2, '0')}</span>
                 <span className="absolute top-4 right-4 font-mono text-[10px] tracking-[0.18em] text-white/85 uppercase opacity-0 transition-opacity duration-500 group-hover:opacity-100">Explore chapter ↗</span>

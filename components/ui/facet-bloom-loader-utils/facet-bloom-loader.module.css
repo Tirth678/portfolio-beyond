@@ -1,0 +1,86 @@
+.root {
+  --facet-accent: currentColor;
+  --facet-duration: 1680ms;
+  --facet-size: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  color: inherit;
+}
+
+.bloom {
+  position: relative;
+  display: block;
+  width: var(--facet-size);
+  height: var(--facet-size);
+  flex: 0 0 var(--facet-size);
+}
+
+.facetPosition {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+}
+
+.facet {
+  position: absolute;
+  inset: 5% auto auto 50%;
+  width: 8px;
+  height: 13px;
+  border: 1px solid color-mix(in srgb, var(--facet-accent) 48%, transparent);
+  border-radius: 70% 70% 45% 45%;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--facet-accent) 82%, white),
+    color-mix(in srgb, var(--facet-accent) 34%, transparent)
+  );
+  box-shadow: 0 0 8px color-mix(in srgb, var(--facet-accent) 10%, transparent);
+  opacity: 0.24;
+  transform: translateX(-50%) scale(0.72);
+  transform-origin: 50% 145%;
+  animation: facet-open var(--facet-duration) cubic-bezier(0.4, 0, 0.2, 1)
+    infinite;
+}
+
+.label {
+  color: rgba(245, 242, 234, 0.55);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@keyframes facet-open {
+  0%,
+  26%,
+  100% {
+    opacity: 0.2;
+    transform: translateX(-50%) translateY(2px) scale(0.72);
+  }
+
+  48%,
+  64% {
+    opacity: 0.94;
+    transform: translateX(-50%) translateY(-2px) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .facet {
+    animation: none;
+    opacity: 0.72;
+    transform: translateX(-50%) scale(0.88);
+  }
+}
+
+@media (forced-colors: active) {
+  .facet {
+    border-color: CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+}
