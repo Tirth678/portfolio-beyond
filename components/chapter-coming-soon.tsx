@@ -21,7 +21,7 @@ export function ChapterComingSoon({ title, eyebrow, number }: ChapterComingSoonP
         </div>
         <div data-reveal className="mt-10 md:mt-16">
           <p className="section-label">{number} — {eyebrow}</p>
-          <h1 className="mt-6 font-display text-[clamp(4rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">{title}</h1>
+          <h1 className="mt-6 font-display text-[clamp(3rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">{title}</h1>
         </div>
         <div className="mt-14 border-t border-white/10 py-12 md:mt-20 md:py-16" data-reveal>
           <AsciiComingSoon />

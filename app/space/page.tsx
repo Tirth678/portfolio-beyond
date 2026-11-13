@@ -33,7 +33,7 @@ export default function SpacePage() {
         <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8" data-reveal>
             <p className="section-label">{eyebrow}</p>
-            <h1 className="mt-6 font-display text-[clamp(4rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">
+            <h1 className="mt-6 font-display text-[clamp(3rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">
               {title}
             </h1>
           </div>

@@ -20,7 +20,7 @@ export default function PhilosophyPage() {
         <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
           <div className="md:col-span-9" data-reveal>
             <p className="section-label">02 — Beliefs</p>
-            <h1 className="mt-6 font-display text-[clamp(3.5rem,11vw,10rem)] leading-[0.82] tracking-[-0.04em]">Philosophy</h1>
+            <h1 className="mt-6 font-display text-[clamp(2.75rem,11vw,10rem)] leading-[0.82] tracking-[-0.04em]">Philosophy</h1>
           </div>
           <p data-reveal className="max-w-sm text-sm leading-7 text-paper/55 md:col-span-3 md:pb-3">
             A space for ideas, beliefs and reflections.

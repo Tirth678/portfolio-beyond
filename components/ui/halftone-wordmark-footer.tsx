@@ -171,8 +171,12 @@ const HWF_CSS = `
 }
 .hwf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 720px) {
+  .hwf-root { height: auto !important; min-height: 440px; padding-bottom: clamp(8rem, 25vw, 13rem); }
   .hwf-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: 18px; }
-  .hwf-brand { grid-column: 1 / -1; }
+  .hwf-brand, .hwf-col:last-child { grid-column: 1 / -1; }
+  .hwf-col { min-width: 0; overflow-wrap: anywhere; }
+  .hwf-col a, .hwf-up { display: inline-block; padding-block: 5px; }
+  .hwf-up { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hwf-col a, .hwf-up { transition: none; }
