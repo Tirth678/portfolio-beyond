@@ -175,10 +175,10 @@ export function AsciiComingSoon() {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative isolate flex min-h-[380px] items-center justify-center overflow-hidden bg-[#050505] sm:min-h-[500px]">
+    <div ref={wrapperRef} className="relative isolate flex min-h-[300px] items-center justify-center overflow-hidden bg-[#050505] sm:min-h-[500px]">
       <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/35" />
-      <p className="relative px-6 text-center font-display text-[clamp(3.2rem,9vw,7.5rem)] leading-none italic tracking-[-0.03em] text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)]">Coming soon</p>
+      <p className="relative px-6 text-center font-display text-[clamp(2.7rem,9vw,7.5rem)] leading-none italic tracking-[-0.03em] text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.95)]">Coming soon</p>
     </div>
   );
 }

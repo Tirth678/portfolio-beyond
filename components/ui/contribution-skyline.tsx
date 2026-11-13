@@ -481,12 +481,14 @@ export default function ContributionSkyline({
     return { dark: false, swatches: ["#ebedf0", ...p], accent: p[3] }
   })
   const [width, setWidth] = React.useState(0)
+  const [horizontalScroll, setHorizontalScroll] = React.useState(false)
   const [active, setActive] = React.useState(-1)
   const [legendLevel, setLegendLevel] = React.useState(-1)
   const [announce, setAnnounce] = React.useState("")
 
   const rootRef = React.useRef<HTMLElement>(null)
   const stageRef = React.useRef<HTMLDivElement>(null)
+  const scrollRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const tipRef = React.useRef<HTMLDivElement>(null)
   const engine = React.useRef<{ kick: () => void; load: () => void; retheme: () => void; tipWidth: (w: number) => void } | null>(null)
@@ -512,7 +514,8 @@ export default function ContributionSkyline({
     const stage = stageRef.current
     const canvas = canvasRef.current
     const tip = tipRef.current
-    if (!root || !stage || !canvas || !tip) return
+    const scroll = scrollRef.current
+    if (!root || !stage || !canvas || !tip || !scroll) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
@@ -531,6 +534,8 @@ export default function ContributionSkyline({
     let elevGoal = 0
     // layout
     let W = 0
+    let viewportWidth = 0
+    let initialScroll = false
     let H2 = 0
     let H3 = 0
     let Hmax = 0
@@ -663,6 +668,7 @@ export default function ContributionSkyline({
       const w = Math.round(stage.clientWidth)
       if (!w || !n) return
       W = w
+      viewportWidth = Math.round(scroll.clientWidth)
       // Narrow cards give the weekday names' column to the grid instead; rows get too tight to label.
       gutter = W < 520 ? 0 : labelW
       dpr = Math.min(2, window.devicePixelRatio || 1)
@@ -677,8 +683,15 @@ export default function ContributionSkyline({
       canvas.style.width = W + "px"
       canvas.style.height = Hmax + "px"
       lastH = -1
-      cfg.current.setWidth(W)
+      cfg.current.setWidth(viewportWidth)
+      setHorizontalScroll(scroll.scrollWidth > scroll.clientWidth)
       draw()
+      // Start at the newest activity on a narrow screen. Do not reset the
+      // user's scroll position on subsequent resizes or view changes.
+      if (!initialScroll && scroll.scrollWidth > scroll.clientWidth) {
+        scroll.scrollLeft = scroll.scrollWidth
+        initialScroll = true
+      }
     }
 
     const draw = () => {
@@ -929,7 +942,7 @@ export default function ContributionSkyline({
 
     const onDown = (ev: PointerEvent) => {
       if (ev.button !== 0) return
-      const can = cfg.current.orbit && target === 1
+      const can = cfg.current.orbit && target === 1 && (ev.pointerType === "mouse" || scroll.scrollWidth <= scroll.clientWidth)
       drag = { id: ev.pointerId, x: ev.clientX, y: ev.clientY, yaw: yawGoal, elev: elevGoal, moved: false, orbit: can, mouse: ev.pointerType === "mouse" }
       if (can) {
         try {
@@ -1028,6 +1041,13 @@ export default function ContributionSkyline({
       hovered = -1
       refreshActive()
       cfg.current.setAnnounce(cfg.current.describe(i))
+      // Keep keyboard-selected cells visible in the horizontal mobile viewport.
+      const x = (polys[i * 24] + polys[i * 24 + 4]) / 2
+      if (scroll.scrollWidth > scroll.clientWidth && Number.isFinite(x)) {
+        const left = scroll.scrollLeft
+        if (x < left + 32) scroll.scrollLeft = Math.max(0, x - 32)
+        else if (x > left + scroll.clientWidth - 32) scroll.scrollLeft = x - scroll.clientWidth + 32
+      }
     }
 
     const onBlur = () => {
@@ -1075,9 +1095,10 @@ export default function ContributionSkyline({
     } else enter()
 
     const ro = new ResizeObserver(() => {
-      if (Math.round(stage.clientWidth) !== W) relayout()
+      if (Math.round(stage.clientWidth) !== W || Math.round(scroll.clientWidth) !== viewportWidth) relayout()
     })
     ro.observe(stage)
+    ro.observe(scroll)
 
     const mo = new MutationObserver(retheme)
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-theme"] })
@@ -1172,7 +1193,9 @@ export default function ContributionSkyline({
   const ease = "cubic-bezier(0.65, 0, 0.35, 1)"
   const levelNames = ["No " + plural, "Light", "Moderate", "Heavy", "Heaviest"]
 
-  const hints = ["Hover a day for details · arrow keys to explore", "Drag to orbit · double-click to reset"]
+  const hints = horizontalScroll
+    ? ["Swipe sideways · tap a day", "Swipe sideways · tap a day for details"]
+    : ["Hover a day for details · arrow keys to explore", "Drag to orbit · double-click to reset"]
   const hint = hints[is3d && orbit ? 1 : 0]
 
   return (
@@ -1231,7 +1254,8 @@ export default function ContributionSkyline({
       </header>
 
       <div className="relative rounded-lg border" style={{ borderColor: "var(--color-border, #e5e5e5)" }}>
-        <div className="relative px-3 pt-3 sm:px-4 sm:pt-4">
+        <div ref={scrollRef} className="overflow-x-auto overscroll-x-contain" aria-label="Contribution chart scroll area">
+          <div className="relative min-w-[680px] px-3 pt-3 sm:min-w-0 sm:px-4 sm:pt-4">
           <div
             ref={stageRef}
             className="relative w-full overflow-hidden rounded-md outline-offset-4 has-[:focus-visible]:outline-2"
@@ -1246,7 +1270,7 @@ export default function ContributionSkyline({
                 ", shown as a " + (is3d ? "3D skyline" : "heat map") + ". Use the arrow keys to read individual days."
               }
               className="absolute top-0 left-0 block outline-none"
-              style={{ maxWidth: "none", touchAction: is3d && orbit ? "pan-y" : "auto" }}
+              style={{ maxWidth: "none", touchAction: horizontalScroll ? "pan-x pan-y" : is3d && orbit ? "pan-y" : "auto" }}
             />
 
             {showStats && corners && (
@@ -1315,6 +1339,7 @@ export default function ContributionSkyline({
                 borderTop: "5px solid var(--color-foreground, #171717)",
               }}
             />
+          </div>
           </div>
         </div>
 

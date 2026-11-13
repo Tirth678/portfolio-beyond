@@ -22,7 +22,7 @@ export function ContactSection({
 
             <a
               href={`mailto:${profile.email}`}
-              className="group mt-10 inline-flex items-center gap-4 border-b border-accent/40 pb-2 font-mono text-[11px] tracking-[0.18em] text-accent uppercase transition-colors hover:border-accent"
+              className="group mt-10 inline-flex max-w-full items-center gap-4 break-all border-b border-accent/40 pb-2 font-mono text-[11px] tracking-[0.18em] text-accent uppercase transition-colors hover:border-accent"
             >
               {profile.email}
               <span

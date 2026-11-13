@@ -27,7 +27,7 @@ export default async function ThoughtsPage() {
         <div className="mt-10 grid gap-10 md:mt-16 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8" data-reveal>
             <p className="section-label">03 — After dark</p>
-            <h1 className="mt-6 font-display text-[clamp(4rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">Thoughts<span className="text-accent">.</span></h1>
+            <h1 className="mt-6 font-display text-[clamp(3rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">Thoughts<span className="text-accent">.</span></h1>
           </div>
           <div data-reveal className="max-w-sm md:col-span-4 md:pb-2">
             <p className="font-mono text-[10px] tracking-[0.2em] text-accent uppercase">Thoughts × Substack</p>

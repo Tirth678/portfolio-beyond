@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Profile } from '@/lib/types';
 
@@ -15,8 +16,11 @@ const links = [
 const menuDelays = ['delay-[80ms]', 'delay-[140ms]', 'delay-[200ms]', 'delay-[260ms]', 'delay-[320ms]'];
 
 export function SiteHeader({ profile }: { profile: Profile }) {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -58,11 +62,11 @@ export function SiteHeader({ profile }: { profile: Profile }) {
             : 'border-b border-transparent bg-gradient-to-b from-black/55 to-transparent'
         }`}
       >
-        <div className="shell flex h-[76px] items-center justify-between gap-6">
+        <div className="shell flex h-[76px] items-center justify-between gap-3 sm:gap-6">
           <Link
             href="/"
             onClick={() => setMenuOpen(false)}
-            className="font-mono text-[11px] tracking-[0.18em] whitespace-nowrap text-paper uppercase"
+            className="min-w-0 font-mono text-[10px] tracking-[0.12em] whitespace-nowrap text-paper uppercase sm:text-[11px] sm:tracking-[0.18em]"
           >
             {profile.name}
           </Link>
@@ -93,7 +97,7 @@ export function SiteHeader({ profile }: { profile: Profile }) {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
-            className="font-mono text-[10px] tracking-[0.2em] text-paper/70 uppercase transition-colors hover:text-paper md:hidden"
+            className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-end font-mono text-[10px] tracking-[0.2em] text-paper/70 uppercase transition-colors hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent md:hidden"
           >
             {menuOpen ? 'Close' : 'Menu'}
           </button>
@@ -130,7 +134,7 @@ export function SiteHeader({ profile }: { profile: Profile }) {
             ))}
           </nav>
 
-          <div className={`shell pb-10 transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${menuOpen ? 'translate-y-0 opacity-100 delay-[320ms]' : 'translate-y-3 opacity-0 delay-0'}`}>
+          <div className={`shell pb-[max(2.5rem,env(safe-area-inset-bottom))] transition-[opacity,transform] duration-700 ease-out motion-reduce:transition-none ${menuOpen ? 'translate-y-0 opacity-100 delay-[320ms]' : 'translate-y-3 opacity-0 delay-0'}`}>
             <p className="font-mono text-[9px] tracking-[0.18em] text-paper/40 uppercase">
               {profile.availability}
             </p>

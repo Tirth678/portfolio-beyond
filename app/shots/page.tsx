@@ -20,7 +20,7 @@ export default function ShotsPage() {
         <div data-reveal className="mt-10 grid gap-8 md:mt-16 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <p className="section-label">04 — Shots</p>
-            <h1 className="mt-6 font-display text-[clamp(4rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">Shots</h1>
+            <h1 className="mt-6 font-display text-[clamp(3rem,14vw,11rem)] leading-[0.82] tracking-[-0.04em]">Shots</h1>
           </div>
           <p className="max-w-sm text-sm leading-7 text-paper/55 md:col-span-4 md:pb-3">
             Moments in photographs, marked by date and time.
